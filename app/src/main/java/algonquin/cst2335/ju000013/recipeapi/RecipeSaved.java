@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class RecipeSaved {
-    @PrimaryKey (autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo (name = "id")
     public int id;
     @ColumnInfo (name = "image_url")

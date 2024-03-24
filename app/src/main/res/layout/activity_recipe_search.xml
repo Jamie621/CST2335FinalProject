@@ -33,11 +33,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="158dp" />
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/search_results"-->
-<!--        android:layout_width="409dp"-->
-<!--        android:layout_height="616dp"-->
-<!--        tools:layout_editor_absoluteX="1dp"-->
-<!--        tools:layout_editor_absoluteY="66dp"-->
-<!--        tools:ignore="MissingConstraints" />-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_results"
+        android:layout_width="409dp"
+        android:layout_height="616dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="66dp"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

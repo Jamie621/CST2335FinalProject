@@ -5,6 +5,6 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
-public class RecipeViewModel extends ViewModel {
-    public MutableLiveData<ArrayList<RecipeSaved>> savedRecipes = new MutableLiveData<>();
+public class RecipeSearchedViewModel extends ViewModel {
+    public MutableLiveData<ArrayList<RecipeSearched>> searchedRecipes = new MutableLiveData<>();
 }

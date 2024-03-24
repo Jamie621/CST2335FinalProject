@@ -7,14 +7,14 @@
 
 
 <resources>
-<string name="app_name">CST2335FinalProject</string>
-<string name="Final_Project" translatable="false">Final Project</string>
+    <string name="app_name">CST2335FinalProject</string>
+    <string name="Final_Project" translatable="false">Final Project</string>
 
-<string name="sunrise_sunset_lookup">Sunrise &amp; Sunset lookup</string>
-<string name="recipe_search">Recipe Search</string>
-<string name="dictionary_api">Dictionary API</string>
-<string name="deezer_song_search_api">Deezer song search api</string>
+    <string name="sunrise_sunset_lookup">Sunrise &amp; Sunset lookup</string>
+    <string name="recipe_search">Recipe Search</string>
+    <string name="dictionary_api">Dictionary API</string>
+    <string name="deezer_song_search_api">Deezer song search api</string>
 
-<string name="Lookup">Lookup</string>
+    <string name="Lookup">Lookup</string>
 
 </resources>

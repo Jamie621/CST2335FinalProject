@@ -1,14 +1,13 @@
 package algonquin.cst2335.ju000013;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.Dictionary;
-import java.util.Set;
+import androidx.appcompat.app.AppCompatActivity;
+
+import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,14 +35,11 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
         // Set click listener for Recipe Search
-  /*        buttonRecipeSearch.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View v) {
-         Replace RecipeSearchActivity.class with the actual class name for this activity
-                Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
-               startActivity(intent);
-             }
-          });*/
+        buttonRecipeSearch.setOnClickListener(click ->{
+            Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
+            startActivity(intent);
+        });
+
 
 //         Set click listener for Dictionary API
           buttonDictionaryApi.setOnClickListener(new View.OnClickListener() {

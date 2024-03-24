@@ -6,4 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".recipeapi.RecipeSearchActivity">
 
+    <EditText
+        android:id="@+id/editSearchText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter Here"
+        app:layout_constraintEnd_toStartOf="@+id/button_search"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="20dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="@+id/editSearchText"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="409dp"
+        android:layout_height="664dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="66dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

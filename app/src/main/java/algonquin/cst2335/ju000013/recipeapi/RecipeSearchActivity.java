@@ -136,6 +136,10 @@ public class RecipeSearchActivity extends AppCompatActivity {
             searchText = editSearchText.getText().toString();
             try {
                 if(!searchText.isEmpty()){
+                    // Clear the previous search results
+                    searchedRecipes.clear();
+                    searchAdapter.notifyDataSetChanged();// Notify the adapter that the data set has changed
+
                     String url = URL_REQUEST_DATA + URLEncoder.encode(searchText, "UTF-8") + URL_API_PARAM;
 
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,

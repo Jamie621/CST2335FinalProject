@@ -37,7 +37,7 @@
         android:id="@+id/search_results"
         android:layout_width="409dp"
         android:layout_height="616dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="66dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/editSearchText"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

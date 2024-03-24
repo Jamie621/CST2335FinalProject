@@ -5,37 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/result_id_text"
-        android:layout_width="235dp"
-        android:layout_height="wrap_content"
-        android:text="ID"
-        app:layout_constraintBottom_toBottomOf="@+id/result_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/result_image"
-        tools:ignore="MissingConstraints" />
-
     <ImageView
         android:id="@+id/result_image"
         android:layout_width="48dp"
         android:layout_height="49dp"
+        app:layout_constraintBottom_toBottomOf="@+id/result_title_text"
         app:layout_constraintStart_toEndOf="@+id/result_title_text"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/result_title_text"
         app:srcCompat="@android:drawable/btn_star_big_on" />
 
     <TextView
-        android:id="@+id/result_title_text"
-        android:layout_width="128dp"
+        android:id="@+id/result_id_text"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:text="ID"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/result_image"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/result_image"
+        app:layout_constraintTop_toTopOf="@+id/result_image"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SAVE"
+        app:layout_constraintBottom_toBottomOf="@+id/result_id_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/result_id_text" />
+        app:layout_constraintStart_toEndOf="@+id/result_id_text"
+        app:layout_constraintTop_toTopOf="@+id/result_id_text" />
+
+    <TextView
+        android:id="@+id/result_title_text"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        app:layout_constraintBottom_toBottomOf="@+id/result_image"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

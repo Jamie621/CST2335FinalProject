@@ -37,7 +37,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
         prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
         editor = prefs.edit();
 
-
+        /* search function */
         buttonSearch.setOnClickListener(click -> {
             /* save search text to SharedPreference */
             editor.putString("SearchText", editSearchText.getText().toString());

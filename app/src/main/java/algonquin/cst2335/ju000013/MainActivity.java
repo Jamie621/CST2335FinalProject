@@ -6,10 +6,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 
 import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
 
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
         });
+
 
 //         Set click listener for Dictionary API
           buttonDictionaryApi.setOnClickListener(new View.OnClickListener() {

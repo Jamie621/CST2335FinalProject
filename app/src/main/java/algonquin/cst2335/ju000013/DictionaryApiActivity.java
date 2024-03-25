@@ -26,14 +26,12 @@ import java.util.List;
 import java.util.concurrent.Executors;
 
 public class DictionaryApiActivity extends AppCompatActivity {
-
     private EditText editTextWord;
     private Button buttonSearch;
     private RecyclerView recyclerViewDefinitions;
     private DictionaryAdapter dictionaryAdapter;
     private RequestQueue requestQueue;
     private AppDatabase db;
-
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -47,17 +45,13 @@ public class DictionaryApiActivity extends AppCompatActivity {
         recyclerViewDefinitions = findViewById(R.id.definition_list);
 
         recyclerViewDefinitions.setLayoutManager(new LinearLayoutManager(this));
-        dictionaryAdapter = new DictionaryAdapter(new ArrayList<>());
+        dictionaryAdapter = new DictionaryAdapter(new ArrayList<>(), this::onDeleteDefinition);
         recyclerViewDefinitions.setAdapter(dictionaryAdapter);
 
         requestQueue = Volley.newRequestQueue(this);
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "dictionary_db").build();
 
-        if (savedInstanceState == null) {
-            editTextWord.setText(sharedPreferences.getString("lastSearch", ""));
-        } else {
-            editTextWord.setText(savedInstanceState.getString("lastSearch", ""));
-        }
+        editTextWord.setText(savedInstanceState == null ? sharedPreferences.getString("lastSearch", "") : savedInstanceState.getString("lastSearch", ""));
 
         buttonSearch.setOnClickListener(v -> {
             String word = editTextWord.getText().toString().trim();
@@ -74,62 +68,65 @@ public class DictionaryApiActivity extends AppCompatActivity {
         String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url,
-                response -> parseAndDisplayDefinitions(word, response),
-                error -> {
-                    String errorMessage = "Error fetching definitions: ";
-                    if (error != null && error.getMessage() != null) {
-                        errorMessage += error.getMessage();
-                    } else {
-                        errorMessage += "Unknown error";
-                    }
-                    Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-                }
+                this::parseAndDisplayDefinitions,
+                error -> Toast.makeText(this, "Error fetching definitions: " + error.getMessage(), Toast.LENGTH_SHORT).show()
         );
 
         requestQueue.add(jsonArrayRequest);
     }
 
-    private void parseAndDisplayDefinitions(String word, JSONArray response) {
+    private void parseAndDisplayDefinitions(JSONArray response) {
         try {
             List<Definition> definitions = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
                 JSONObject entry = response.getJSONObject(i);
-                String definitionText = entry.getJSONArray("meanings")
-                        .getJSONObject(0)
-                        .getJSONArray("definitions")
-                        .getJSONObject(0)
-                        .getString("definition");
-                definitions.add(new Definition(word, definitionText));
-            }
-            dictionaryAdapter.updateData(definitions);
-
-            if (!definitions.isEmpty()) {
-                Executors.newSingleThreadExecutor().execute(() -> {
-                    try {
-                        db.wordDao().insert(new WordEntity(word, definitions.get(0).getDefinition()));
-                    } catch (Exception e) {
-                        Toast.makeText(this, "Error inserting word into database: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                JSONArray meanings = entry.getJSONArray("meanings");
+                for (int j = 0; j < meanings.length(); j++) {
+                    JSONObject meaning = meanings.getJSONObject(j);
+                    JSONArray definitionsArray = meaning.getJSONArray("definitions");
+                    for (int k = 0; k < definitionsArray.length(); k++) {
+                        JSONObject definitionObject = definitionsArray.getJSONObject(k);
+                        String definitionText = definitionObject.getString("definition");
+                        definitions.add(new Definition(entry.getString("word"), definitionText));
                     }
-                });
-            } else {
-                Toast.makeText(this, "No definitions found.", Toast.LENGTH_SHORT).show();
+                }
             }
+
+            runOnUiThread(() -> dictionaryAdapter.updateData(definitions));
         } catch (Exception e) {
-            Toast.makeText(this, "Error parsing JSON response: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            runOnUiThread(() -> Toast.makeText(this, "Error parsing JSON response: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("lastSearch", editTextWord.getText().toString());
+    public void onDeleteDefinition(Definition definition) {
+        Executors.newSingleThreadExecutor().execute(() -> db.wordDao().delete(new WordEntity(definition.getWord(), definition.getDefinition())));
+    }
+
+    private static class Definition {
+        private final String word;
+        private final String definition;
+
+        Definition(String word, String definition) {
+            this.word = word;
+            this.definition = definition;
+        }
+
+        public String getWord() {
+            return word;
+        }
+
+        public String getDefinition() {
+            return definition;
+        }
     }
 
     private class DictionaryAdapter extends RecyclerView.Adapter<DictionaryAdapter.ViewHolder> {
-        private final List<Definition> definitions;
+        private List<Definition> definitions;
+        private final OnDefinitionDeleteListener deleteListener;
 
-        DictionaryAdapter(List<Definition> definitions) {
+        DictionaryAdapter(List<Definition> definitions, OnDefinitionDeleteListener deleteListener) {
             this.definitions = definitions;
+            this.deleteListener = deleteListener;
         }
 
         void updateData(List<Definition> newDefinitions) {
@@ -157,25 +154,31 @@ public class DictionaryApiActivity extends AppCompatActivity {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView textViewDefinition;
+            final Button deleteButton;
 
             ViewHolder(View itemView) {
                 super(itemView);
                 textViewDefinition = itemView.findViewById(R.id.definition_text_view);
+                deleteButton = itemView.findViewById(R.id.delete_button);
+
+                deleteButton.setOnClickListener(view -> {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Definition definition = definitions.get(position);
+                        deleteListener.onDeleteDefinition(definition);
+
+                        // Remove from the adapter's data set
+                        definitions.remove(position);
+
+                        // Notify the adapter of the item removal
+                        notifyItemRemoved(position);
+                    }
+                });
             }
         }
     }
 
-    private static class Definition {
-        private final String word;
-        private final String definition;
-
-        Definition(String word, String definition) {
-            this.word = word;
-            this.definition = definition;
-        }
-
-        public String getDefinition() {
-            return definition;
-        }
+    public interface OnDefinitionDeleteListener {
+        void onDeleteDefinition(Definition definition);
     }
 }

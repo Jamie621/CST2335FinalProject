@@ -12,11 +12,13 @@
         android:icon="@drawable/recipe"
         android:title="Recipe Search"
         app:showAsAction="never" />
+
     <item
         android:id="@+id/item_3"
         android:icon="@drawable/dictionary"
         android:title="Dictionary API"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/item_4"
         android:icon="@drawable/song"

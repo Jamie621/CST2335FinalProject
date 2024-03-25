@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             }
            });
 
+
         // Set click listener for Deezer Song Search API
   /*           buttonDeezerSongSearchApi.setOnClickListener(new View.OnClickListener() {
                @Override

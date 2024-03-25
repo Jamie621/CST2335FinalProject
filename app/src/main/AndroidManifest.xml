@@ -28,8 +28,15 @@
 
 <!--        <activity
             android:name=".SunriseSunsetLookupActivity"
+
             android:exported="false">
         </activity>-->
+
+        <activity
+            android:name=".recipeapi.RecipeSearchActivity"
+            android:exported="false">
+        </activity>
+
 
         <activity
             android:name=".DictionaryApiActivity"
@@ -37,10 +44,12 @@
             android:exported="false" />
         </activity>
 
- <!--       <activity
-            android:name=".DeezerSongSearchApiActivity"
+
+        <activity
+            android:name=".songApi.SongSearchActivity"
             android:exported="false">
-        </activity>-->
+        </activity>
+
 
     </application>
 

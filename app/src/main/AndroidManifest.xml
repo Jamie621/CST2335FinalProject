@@ -41,7 +41,7 @@
         -->
         <activity
             android:name=".DictionaryApiActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>

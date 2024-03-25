@@ -19,22 +19,18 @@ public class RecipeSearched {
     public RecipeSearched() {
     }
 
+    public RecipeSearched(String title, String image_url, int id, String source_url) {
+        this.title = title;
+        this.image_url = image_url;
+        this.id = id;
+        this.source_url = source_url;
+    }
+
     public String getSource_url() {
         return source_url;
     }
 
     public void setSource_url(String source_url) {
-        this.source_url = source_url;
-    }
-
-    public RecipeSearched(String title, String image_url, int id) {
-        this.title = title;
-        this.image_url = image_url;
-        this.id = id;
-    }
-    public RecipeSearched(String image_url, String title, String source_url) {
-        this.image_url = image_url;
-        this.title = title;
         this.source_url = source_url;
     }
 

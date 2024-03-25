@@ -40,6 +40,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import algonquin.cst2335.ju000013.R;
 import algonquin.cst2335.ju000013.databinding.ActivityRecipeSearchBinding;
@@ -53,7 +55,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
     private ArrayList<RecipeSearched> searchedRecipes;
     RecipeSearchedViewModel saveModel;
     private ArrayList<RecipeSearched> savedRecipes;
-    private RecipeSavedDAO sDAO;
+    private RecipeSearchedDAO sDAO;
     EditText editSearchText;
     Button buttonSearch;
     RecyclerView searchResultsRecycle;
@@ -150,8 +152,9 @@ public class RecipeSearchActivity extends AppCompatActivity {
                                         String title = jsonObject.getString("title");
                                         String image = jsonObject.getString("image");
                                         int id = jsonObject.getInt("id");
+                                        String sourceUrl = URL_DETAIL_DATA + id + URL_DETAIL_PARAM;
                                         /* add to arraylist*/
-                                        searchedRecipes.add(new RecipeSearched(title, image, id));
+                                        searchedRecipes.add(new RecipeSearched(title, image, id, sourceUrl));
 
                                     }searchAdapter.notifyItemInserted(searchedRecipes.size()-1);
                                 } catch (JSONException e) {
@@ -208,10 +211,9 @@ public class RecipeSearchActivity extends AppCompatActivity {
 
                 /* show detail and ask for save or not */
                 RecipeSearched recipeDetail = searchedRecipes.get(position);
-                int id = recipeDetail.getId();
                 String title = recipeDetail.getTitle();
                 String image_url = recipeDetail.getImage_url();
-                String sourceUrl = URL_DETAIL_DATA + id + URL_DETAIL_PARAM;
+                String sourceUrl = recipeDetail.getSource_url();
                 Bitmap bitmap = null;
                 Drawable drawable = null;
                 try {
@@ -231,7 +233,14 @@ public class RecipeSearchActivity extends AppCompatActivity {
                         .setMessage(sourceUrl)
                         .setNegativeButton(getString(R.string.no), (dialog, cl) -> {})
                         .setPositiveButton(getString(R.string.yes), (dialog, cl) -> {
-                            savedRecipes.add(recipeDetail);
+                            savedRecipes.add(recipeDetail); // insert into saved arrayList
+                            Executor thread = Executors.newSingleThreadExecutor();
+                            thread.execute(() ->
+                            {
+                                sDAO.insertRecipe(recipeDetail); // insert into database
+                            });
+                            Snackbar.make(click, getString(R.string.add_alert), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RecipeSearchActivity.this, getString(R.string.add_alert), Toast.LENGTH_SHORT).show();
                         });
             });
         }

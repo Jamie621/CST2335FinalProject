@@ -17,6 +17,8 @@ import androidx.room.Room;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AlertDialog;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -100,6 +102,7 @@ public class DictionaryApiActivity extends AppCompatActivity {
 
     public void onDeleteDefinition(Definition definition) {
         Executors.newSingleThreadExecutor().execute(() -> db.wordDao().delete(new WordEntity(definition.getWord(), definition.getDefinition())));
+        Snackbar.make(findViewById(android.R.id.content), "Definition deleted", Snackbar.LENGTH_SHORT).show();
     }
 
     private static class Definition {
@@ -165,13 +168,16 @@ public class DictionaryApiActivity extends AppCompatActivity {
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Definition definition = definitions.get(position);
-                        deleteListener.onDeleteDefinition(definition);
-
-                        // Remove from the adapter's data set
-                        definitions.remove(position);
-
-                        // Notify the adapter of the item removal
-                        notifyItemRemoved(position);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
+                        builder.setTitle("Delete Definition")
+                                .setMessage("Are you sure you want to delete this definition?")
+                                .setPositiveButton("Delete", (dialog, which) -> {
+                                    deleteListener.onDeleteDefinition(definition);
+                                    definitions.remove(position);
+                                    notifyItemRemoved(position);
+                                })
+                                .setNegativeButton("Cancel", null)
+                                .show();
                     }
                 });
             }

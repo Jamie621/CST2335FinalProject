@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 import algonquin.cst2335.ju000013.R;
 import algonquin.cst2335.ju000013.databinding.ActivityRecipeSearchBinding;
@@ -219,21 +220,23 @@ public class RecipeSearchActivity extends AppCompatActivity {
                 String title = recipeDetail.getTitle();
                 String image_url = recipeDetail.getImage_url();
                 String sourceUrl = recipeDetail.getSource_url();
-                Bitmap bitmap = null;
-                Drawable drawable = null;
-                try {
-                    bitmap = getBitmap(image_url);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                // Convert Bitmap to Drawable
-                if (bitmap != null) {
-                    drawable = new BitmapDrawable(getResources(), bitmap);
-                }
+//                Bitmap bitmap = null;
+                AtomicReference<Drawable> drawable = null;
+                new Thread(() -> {
+                    try {
+                        Bitmap bitmap = getBitmap(image_url);
+                        // Convert Bitmap to Drawable
+                        if (bitmap != null) {
+                            drawable.set(new BitmapDrawable(getResources(), bitmap));
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(RecipeSearchActivity.this);
                 builder.setTitle(getString(R.string.save_alert))
-                        .setIcon(drawable)
+                        .setIcon(drawable.get())
                         .setMessage(title)
                         .setMessage(sourceUrl)
                         .setNegativeButton(getString(R.string.no), (dialog, cl) -> {})

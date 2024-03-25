@@ -17,5 +17,8 @@
 
     <string name="Lookup">Lookup</string>
     <string name="error_msg">Please enter the name of a valid food</string>
+    <string name="save_alert">Do you want to save as favorite?</string>
+    <string name="no">NO</string>
+    <string name="yes">YES</string>
 
 </resources>

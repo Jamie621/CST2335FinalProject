@@ -1,15 +1,11 @@
 package algonquin.cst2335.ju000013.recipeapi;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,9 +16,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.snackbar.Snackbar;
@@ -33,14 +35,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import algonquin.cst2335.ju000013.R;
 import algonquin.cst2335.ju000013.databinding.ActivityRecipeSearchBinding;
@@ -52,7 +51,9 @@ public class RecipeSearchActivity extends AppCompatActivity {
     private  RecyclerView.Adapter searchAdapter;
     RecipeSearchedViewModel searchModel;
     private ArrayList<RecipeSearched> searchedRecipes;
-    private ArrayList<RecipeSaved> savedRecipes;
+    RecipeSearchedViewModel saveModel;
+    private ArrayList<RecipeSearched> savedRecipes;
+    private RecipeSavedDAO sDAO;
     EditText editSearchText;
     Button buttonSearch;
     RecyclerView searchResultsRecycle;
@@ -65,6 +66,8 @@ public class RecipeSearchActivity extends AppCompatActivity {
     private final String URL_REQUEST_DATA = "https://api.spoonacular.com/recipes/complexSearch?query=";
     private final String URL_API_PARAM = "&apiKey=" + MY_KEY;
     protected RequestQueue queue;
+    private final String URL_DETAIL_DATA = "https://api.spoonacular.com/recipes/";
+    private final String URL_DETAIL_PARAM = "/information?apiKey=" + MY_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,15 +111,10 @@ public class RecipeSearchActivity extends AppCompatActivity {
                 holder.result_title_text.setText(recipeSearched.getTitle());
                 holder.result_id_text.setText(String.format(Locale.CANADA, "%d", recipeSearched.getId()));
                 // set image (String) to imageView
+                String image_url = recipeSearched.getImage_url();
                 new Thread(() -> {
                     try {
-                        URL url = new URL(recipeSearched.getImage_url());
-                        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                        connection.setDoInput(true);
-                        connection.connect();
-                        InputStream inputStream = connection.getInputStream();
-                        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-
+                        Bitmap bitmap = getBitmap(image_url);
                         // Set the loaded bitmap to the ImageView on the UI thread
                         holder.result_image.post(() -> holder.result_image.setImageBitmap(bitmap));
                     } catch (IOException e) {
@@ -181,6 +179,17 @@ public class RecipeSearchActivity extends AppCompatActivity {
         editSearchText.setText(searchText);
     }
 
+    /* transfer String url to bitmap. */
+    private static Bitmap getBitmap(String url) throws IOException {
+        URL url1 = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) url1.openConnection();
+        connection.setDoInput(true);
+        connection.connect();
+        InputStream inputStream = connection.getInputStream();
+        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+        return bitmap;
+    }
+
     class MySearchRowHolder extends RecyclerView.ViewHolder {
         TextView result_title_text;
         ImageView result_image;
@@ -192,6 +201,39 @@ public class RecipeSearchActivity extends AppCompatActivity {
             result_image = itemView.findViewById(R.id.result_image);
             result_id_text = itemView.findViewById(R.id.result_id_text);
 
+            /* show detail when you click the item (row). */
+            itemView.setOnClickListener(click -> {
+                // tell you which row (position) this row is currently in the adapter object.
+                int position = getAbsoluteAdapterPosition();
+
+                /* show detail and ask for save or not */
+                RecipeSearched recipeDetail = searchedRecipes.get(position);
+                int id = recipeDetail.getId();
+                String title = recipeDetail.getTitle();
+                String image_url = recipeDetail.getImage_url();
+                String sourceUrl = URL_DETAIL_DATA + id + URL_DETAIL_PARAM;
+                Bitmap bitmap = null;
+                Drawable drawable = null;
+                try {
+                    bitmap = getBitmap(image_url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // Convert Bitmap to Drawable
+                if (bitmap != null) {
+                    drawable = new BitmapDrawable(getResources(), bitmap);
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(RecipeSearchActivity.this);
+                builder.setTitle(getString(R.string.save_alert))
+                        .setIcon(drawable)
+                        .setMessage(title)
+                        .setMessage(sourceUrl)
+                        .setNegativeButton(getString(R.string.no), (dialog, cl) -> {})
+                        .setPositiveButton(getString(R.string.yes), (dialog, cl) -> {
+                            savedRecipes.add(recipeDetail);
+                        });
+            });
         }
     }
 }

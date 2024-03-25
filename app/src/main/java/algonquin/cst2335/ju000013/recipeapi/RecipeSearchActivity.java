@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -76,6 +77,10 @@ public class RecipeSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityRecipeSearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        /* open database */
+        RecipeSavedDatabase db = Room.databaseBuilder(getApplicationContext(), RecipeSavedDatabase.class, "database-name").build();
+        sDAO = db.rsDAO();
 
         /* achieve all the widgets */
         editSearchText = binding.editSearchText;

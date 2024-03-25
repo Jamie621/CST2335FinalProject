@@ -12,7 +12,7 @@ import algonquin.cst2335.ju000013.R;
 public class SavedRecipeActivity extends AppCompatActivity {
     private  RecyclerView.Adapter saveAdapter;
     RecipeSearchedViewModel saveModel;
-    private ArrayList<RecipeSaved> savedRecipes;
+    private ArrayList<RecipeSearched> savedRecipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -13,8 +13,14 @@
     <string name="sunrise_sunset_lookup">Sunrise &amp; Sunset lookup</string>
     <string name="recipe_search">Recipe Search</string>
     <string name="dictionary_api">Dictionary API</string>
-    <string name="deezer_song_search_api">Deezer song search api</string>
+    <string name="hint_enter_word">Enter a word</string>
+    <string name="search">Search</string>
+    <string name="help_dialog_message">Information about how to use the dictionary search feature.</string>
 
+
+    <string name="deezer_song_search_api">Deezer song search api</string>
     <string name="Lookup">Lookup</string>
+
+
 
 </resources>

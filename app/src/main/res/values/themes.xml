@@ -22,6 +22,5 @@
     <item name="android:statusBarColor">@color/my_statusbar</item>
 </style>
 
-
 <style name="Theme.CST2335FinalProject" parent="Base.Theme.CST2335FinalProject" />
 </resources>

@@ -29,7 +29,7 @@
         android:id="@+id/saved_view_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SAVED RECIPES"
+        android:text="SAVED FAVORITE RECIPES"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="158dp" />
 

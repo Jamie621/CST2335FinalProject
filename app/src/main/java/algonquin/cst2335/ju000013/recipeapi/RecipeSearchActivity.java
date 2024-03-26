@@ -56,7 +56,6 @@ public class RecipeSearchActivity extends AppCompatActivity {
     RecipeSearchedViewModel searchModel;
     private ArrayList<RecipeSearched> searchedRecipes;
     RecipeSearchedViewModel saveModel;
-    private ArrayList<RecipeSearched> savedRecipes;
     private RecipeSearchedDAO sDAO;
     EditText editSearchText;
     Button buttonSearch;
@@ -195,8 +194,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
         connection.setDoInput(true);
         connection.connect();
         InputStream inputStream = connection.getInputStream();
-        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-        return bitmap;
+        return BitmapFactory.decodeStream(inputStream);
     }
 
     class MySearchRowHolder extends RecyclerView.ViewHolder {
@@ -220,37 +218,38 @@ public class RecipeSearchActivity extends AppCompatActivity {
                 String title = recipeDetail.getTitle();
                 String image_url = recipeDetail.getImage_url();
                 String sourceUrl = recipeDetail.getSource_url();
-//                Bitmap bitmap = null;
-                AtomicReference<Drawable> drawable = null;
-                new Thread(() -> {
+                Executor thread = Executors.newSingleThreadExecutor();
+                thread.execute(() ->
+                {
                     try {
                         Bitmap bitmap = getBitmap(image_url);
                         // Convert Bitmap to Drawable
+                        Drawable drawable = null;
                         if (bitmap != null) {
-                            drawable.set(new BitmapDrawable(getResources(), bitmap));
+                            drawable = new BitmapDrawable(getResources(), bitmap);
                         }
+                        // Show AlertDialog on UI thread
+                        Drawable finalDrawable = drawable;
+                        runOnUiThread(() -> showSaveAlertDialog(title, sourceUrl, finalDrawable, recipeDetail));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }).start();
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(RecipeSearchActivity.this);
-                builder.setTitle(getString(R.string.save_alert))
-                        .setIcon(drawable.get())
-                        .setMessage(title)
-                        .setMessage(sourceUrl)
-                        .setNegativeButton(getString(R.string.no), (dialog, cl) -> {})
-                        .setPositiveButton(getString(R.string.yes), (dialog, cl) -> {
-                            savedRecipes.add(recipeDetail); // insert into saved arrayList
-                            Executor thread = Executors.newSingleThreadExecutor();
-                            thread.execute(() ->
-                            {
-                                sDAO.insertRecipe(recipeDetail); // insert into database
-                            });
-                            Snackbar.make(click, getString(R.string.add_alert), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(RecipeSearchActivity.this, getString(R.string.add_alert), Toast.LENGTH_SHORT).show();
-                        });
+                });
             });
+        }
+        public void showSaveAlertDialog(String title, String sourceUrl, Drawable drawable, RecipeSearched recipeDetail) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(RecipeSearchActivity.this);
+            builder.setTitle(getString(R.string.save_alert))
+                    .setIcon(drawable)
+                    .setMessage(title + "\n" + sourceUrl)
+                    .setNegativeButton(getString(R.string.no), (dialog, cl) -> {})
+                    .setPositiveButton(getString(R.string.yes), (dialog, cl) -> {
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            sDAO.insertRecipe(recipeDetail); // insert into database
+                        });
+                        Toast.makeText(RecipeSearchActivity.this, getString(R.string.add_alert), Toast.LENGTH_SHORT).show();
+                    })
+                    .show();
         }
     }
 }

@@ -102,20 +102,25 @@ public class SongSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivitySongSearchBinding binding = ActivitySongSearchBinding.inflate(getLayoutInflater());
-        setContentView(R.layout.activity_song_search);
+        setContentView(binding.getRoot());
 
         Toolbar tool_bar = findViewById(R.id.toolbar);
         setSupportActionBar(tool_bar);
 
         queue = Volley.newRequestQueue(this);
 
-        binding.button.setOnClickListener(click -> {
-            artistName = binding.editText.getText().toString();
+        binding.buttonSong.setOnClickListener(click -> {
+            //binding.textViewSong.setText("Hello1");
+            artistName = binding.editTextSong.getText().toString();
 
             // Construct the URL with the artist's name
             String url = null;
             try {
-                url = URL_REQUEST_DATA + URLEncoder.encode(artistName, "UTF-8");
+
+                url =URL_REQUEST_DATA +
+                        //URL_REQUEST_DATA + artistName;
+                        URLEncoder.encode(artistName, "UTF-8");
+                //UnsupportedEncoding
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
@@ -126,17 +131,19 @@ public class SongSearchActivity extends AppCompatActivity {
                         // Your code for processing the JSON response goes here
                         try {
                             // Get the "data" array from the JSON response
+                            Log.d(TAG, "JSON Response: " + response.toString());
                             JSONArray dataArray = response.getJSONArray("data");
                             if (dataArray.length() > 0) {
                                 // Get the first object from the array
                                 JSONObject firstObject = dataArray.getJSONObject(0);
                                 // Get the tracklist URL from the first object
                                 String tracklistUrl = firstObject.getString("tracklist");
-                                binding.textView.setText(tracklistUrl);
+                                //int id = firstObject.getInt("id");
+                                binding.textViewSong.setText(tracklistUrl);
 
                             } else {
                                 // No artist found with the given name
-                                binding.textView.setText("No tracklist found for the artist: " + artistName);
+                                binding.textViewSong.setText("No tracklist found for the artist: " + artistName);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -148,7 +155,9 @@ public class SongSearchActivity extends AppCompatActivity {
                         Log.e(TAG, "Error:" + error.getMessage());
                     });
             queue.add(request);
+            //binding.textViewSong.setText("Hello2");
         });
+
     }
 
 }

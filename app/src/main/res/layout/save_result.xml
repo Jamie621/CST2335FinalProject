@@ -6,17 +6,17 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/result_url_text"
+        android:id="@+id/recipe_saved_url_text"
         android:layout_width="235dp"
         android:layout_height="wrap_content"
-        android:text="Source Url"
-        app:layout_constraintBottom_toBottomOf="@+id/result_summary_text"
-        app:layout_constraintStart_toEndOf="@+id/result_summary_text"
-        app:layout_constraintTop_toTopOf="@+id/result_summary_text"
+        android:text="@string/recipe_source_url"
+        app:layout_constraintBottom_toBottomOf="@+id/recipe_saved_title_text"
+        app:layout_constraintStart_toEndOf="@+id/recipe_saved_title_text"
+        app:layout_constraintTop_toTopOf="@+id/recipe_saved_title_text"
         tools:ignore="MissingConstraints" />
 
     <ImageView
-        android:id="@+id/result_image"
+        android:id="@+id/recipe_result_image"
         android:layout_width="48dp"
         android:layout_height="49dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,19 +24,19 @@
         app:srcCompat="@android:drawable/btn_star_big_on" />
 
     <TextView
-        android:id="@+id/result_summary_text"
+        android:id="@+id/recipe_saved_title_text"
         android:layout_width="128dp"
         android:layout_height="wrap_content"
-        android:text="Result Summary"
-        app:layout_constraintBottom_toBottomOf="@+id/result_image"
-        app:layout_constraintStart_toEndOf="@+id/result_image"
-        app:layout_constraintTop_toTopOf="@+id/result_image" />
+        android:text="@string/recipe_result_title"
+        app:layout_constraintBottom_toBottomOf="@+id/recipe_result_image"
+        app:layout_constraintStart_toEndOf="@+id/recipe_result_image"
+        app:layout_constraintTop_toTopOf="@+id/recipe_result_image" />
 
     <Button
-        android:id="@+id/remove_button"
+        android:id="@+id/recipe_remove_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REMOVE"
+        android:text="@string/recipe_remove_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/result_url_text" />
+        app:layout_constraintTop_toBottomOf="@+id/recipe_saved_url_text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

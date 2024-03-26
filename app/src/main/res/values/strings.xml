@@ -17,9 +17,17 @@
 
     <string name="Lookup">Lookup</string>
     <string name="error_msg">Please enter the name of a valid food</string>
-    <string name="save_alert">Do you want to save as favorite?</string>
-    <string name="no">NO</string>
-    <string name="yes">YES</string>
+    <string name="recipe_save_alert">Do you want to save as favorite?</string>
+    <string name="recipe_no">NO</string>
+    <string name="recipe_yes">YES</string>
     <string name="add_alert">You add it to your Favorites.</string>
+    <string name="recipe_search_text">Enter Here</string>
+    <string name="recipe_search_button">SEARCH</string>
+    <string name="view_favorite_recipes_button">SAVED FAVORITE RECIPES</string>
+    <string name="recipe_source_url">Source Url</string>
+    <string name="recipe_result_title">Result Title</string>
+    <string name="recipe_remove_button">REMOVE</string>
+    <string name="recipe_remove_all">Do you want to clear all?</string>
+    <string name="recipe_clear_confirm">You already deleted all of your saved recipes</string>
 
 </resources>

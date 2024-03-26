@@ -1,6 +1,7 @@
 package algonquin.cst2335.ju000013.recipeapi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 
 import algonquin.cst2335.ju000013.R;
 import algonquin.cst2335.ju000013.databinding.ActivityRecipeSearchBinding;
@@ -55,7 +55,6 @@ public class RecipeSearchActivity extends AppCompatActivity {
     private  RecyclerView.Adapter searchAdapter;
     RecipeSearchedViewModel searchModel;
     private ArrayList<RecipeSearched> searchedRecipes;
-    RecipeSearchedViewModel saveModel;
     private RecipeSearchedDAO sDAO;
     EditText editSearchText;
     Button buttonSearch;
@@ -83,10 +82,10 @@ public class RecipeSearchActivity extends AppCompatActivity {
         sDAO = db.rsDAO();
 
         /* achieve all the widgets */
-        editSearchText = binding.editSearchText;
-        buttonSearch = binding.buttonSearch;
-        searchResultsRecycle = binding.searchResults;
-        savedViewButton = binding.savedViewButton;
+        editSearchText = binding.editRecipeSearchText;
+        buttonSearch = binding.buttonSearchRecipe;
+        searchResultsRecycle = binding.searchRecipeRecycler;
+        savedViewButton = binding.viewSavedRecipeButton;
 
         /* save search text to SharedPreference to show automatically next time. */
         prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
@@ -96,7 +95,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
         /* To specify a single column scrolling in a Vertical direction */
         searchResultsRecycle.setLayoutManager(new LinearLayoutManager(this));
 
-        /* initialize and retrieve the ArrayList<> that it is storing */
+        /* initialize the ArrayList<> that it is storing */
         searchModel = new ViewModelProvider(this).get(RecipeSearchedViewModel.class);
         searchedRecipes = searchModel.searchedRecipes.getValue();
         if (searchedRecipes == null){
@@ -185,10 +184,16 @@ public class RecipeSearchActivity extends AppCompatActivity {
         /* achieve search text from SharedPreference */
         String searchText = prefs.getString("SearchText", "");
         editSearchText.setText(searchText);
+
+        /* view saved favorite recipes button. jump to the next page. */
+        Intent savedRecipePage = new Intent( RecipeSearchActivity.this, SavedRecipeActivity.class);
+        savedViewButton.setOnClickListener(click -> {
+            startActivity(savedRecipePage);
+        });
     }
 
     /* transfer String url to bitmap. */
-    private static Bitmap getBitmap(String url) throws IOException {
+    public static Bitmap getBitmap(String url) throws IOException {
         URL url1 = new URL(url);
         HttpURLConnection connection = (HttpURLConnection) url1.openConnection();
         connection.setDoInput(true);
@@ -204,9 +209,9 @@ public class RecipeSearchActivity extends AppCompatActivity {
 
         public MySearchRowHolder(@NonNull View itemView) {
             super(itemView);
-            result_title_text = itemView.findViewById(R.id.result_title_text);
-            result_image = itemView.findViewById(R.id.result_image);
-            result_id_text = itemView.findViewById(R.id.result_id_text);
+            result_title_text = itemView.findViewById(R.id.recipe_title_text);
+            result_image = itemView.findViewById(R.id.recipe_result_image);
+            result_id_text = itemView.findViewById(R.id.recipe_result_id_text);
 
             /* show detail when you click the item (row). */
             itemView.setOnClickListener(click -> {
@@ -239,11 +244,11 @@ public class RecipeSearchActivity extends AppCompatActivity {
         }
         public void showSaveAlertDialog(String title, String sourceUrl, Drawable drawable, RecipeSearched recipeDetail) {
             AlertDialog.Builder builder = new AlertDialog.Builder(RecipeSearchActivity.this);
-            builder.setTitle(getString(R.string.save_alert))
+            builder.setTitle(getString(R.string.recipe_save_alert))
                     .setIcon(drawable)
                     .setMessage(title + "\n" + sourceUrl)
-                    .setNegativeButton(getString(R.string.no), (dialog, cl) -> {})
-                    .setPositiveButton(getString(R.string.yes), (dialog, cl) -> {
+                    .setNegativeButton(getString(R.string.recipe_no), (dialog, cl) -> {})
+                    .setPositiveButton(getString(R.string.recipe_yes), (dialog, cl) -> {
                         Executors.newSingleThreadExecutor().execute(() -> {
                             sDAO.insertRecipe(recipeDetail); // insert into database
                         });

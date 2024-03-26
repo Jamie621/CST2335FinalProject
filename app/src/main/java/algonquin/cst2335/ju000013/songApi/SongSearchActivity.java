@@ -1,10 +1,33 @@
 package algonquin.cst2335.ju000013.songApi;
 
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import androidx.room.Room;
@@ -34,9 +57,15 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import algonquin.cst2335.ju000013.DictionaryApiActivity;
 import algonquin.cst2335.ju000013.R;
+import algonquin.cst2335.ju000013.songApi.SongDAO;
+import algonquin.cst2335.ju000013.songApi.SongViewModel;
+import algonquin.cst2335.ju000013.songApi.SongDatabase;
+//import algonquin.cst2335.ju000013.songApi.SongNameBinding;
 import algonquin.cst2335.ju000013.databinding.ActivityMainBinding;
 import algonquin.cst2335.ju000013.databinding.ActivitySongSearchBinding;
 import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
@@ -45,7 +74,8 @@ public class SongSearchActivity extends AppCompatActivity {
     ActivitySongSearchBinding songBinding;
     ArrayList<Song> songsEntity;
     SongViewModel songModel;
-    RecyclerView.Adapter songApater;
+    //RecyclerView recyclerViewSongs;
+    RecyclerView.Adapter songAdapter;
     SongDatabase songDB;
     SongDAO sDAO;
     int postition;
@@ -95,7 +125,23 @@ public class SongSearchActivity extends AppCompatActivity {
 
         sDAO = songDB.sDAO();
 
-        songBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //recyclerViewSongs = songBinding.recyclerViewSongs;
+
+        songBinding.recyclerViewSongs.setLayoutManager(new LinearLayoutManager(this));
+        songModel = new ViewModelProvider(this).get(SongViewModel.class);
+
+        songsEntity = songModel.songs.getValue();
+
+        if(songsEntity == null){
+            songModel.songs.postValue(songsEntity = new ArrayList<Song>());
+            ExecutorService threadSong = Executors.newSingleThreadExecutor();
+            threadSong.execute(()->{
+                songsEntity.addAll(sDAO.getAllMessages());
+                runOnUiThread(()->{
+                    songBinding.recyclerViewSongs.setAdapter(songAdapter);
+                        });
+                    });
+        }
 
 
 

@@ -53,12 +53,14 @@ public class DictionaryApiActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(this);
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "dictionary_db").build();
 
+        // Retrieving the last searched word from SharedPreferences
         editTextWord.setText(savedInstanceState == null ? sharedPreferences.getString("lastSearch", "") : savedInstanceState.getString("lastSearch", ""));
 
         buttonSearch.setOnClickListener(v -> {
             String word = editTextWord.getText().toString().trim();
             if (!word.isEmpty()) {
                 fetchDefinitions(word);
+                // Saving the last searched word in SharedPreferences
                 sharedPreferences.edit().putString("lastSearch", word).apply();
             } else {
                 Toast.makeText(this, "Please enter a word to search.", Toast.LENGTH_SHORT).show();

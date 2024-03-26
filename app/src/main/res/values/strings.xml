@@ -8,7 +8,7 @@
 
 <resources>
     <string name="app_name">CST2335FinalProject</string>
-    <string name="Final_Project" translatable="false">Final Project</string>
+    <string name="Final_Project">Final Project</string>
 
     <string name="sunrise_sunset_lookup">Sunrise &amp; Sunset lookup</string>
     <string name="recipe_search">Recipe Search</string>

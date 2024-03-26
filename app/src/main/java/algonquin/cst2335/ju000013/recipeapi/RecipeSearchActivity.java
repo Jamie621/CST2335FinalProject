@@ -11,6 +11,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
     ActivityRecipeSearchBinding binding;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

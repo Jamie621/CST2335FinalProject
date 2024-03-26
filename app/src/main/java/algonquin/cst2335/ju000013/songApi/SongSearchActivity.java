@@ -59,44 +59,6 @@ public class SongSearchActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        ActivitySongSearchBinding binding = ActivitySongSearchBinding.inflate( getLayoutInflater() );
-//        setContentView(R.layout.activity_song_search);
-//
-//        Toolbar tool_bar = findViewById(R.id.toolbar);
-//        setSupportActionBar(tool_bar);
-//
-//        queue = Volley.newRequestQueue(this);
-//
-//        binding.button.setOnClickListener(click -> {
-//            artistName = binding.editText.getText().toString();
-//
-//            String url = URL_REQUEST_DATA + artistName;
-//
-//            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-//                    (response) -> {
-//                        // Handle successful response
-//                        // Your code for processing the JSON response goes here
-//                        try {
-//                            JSONArray artistArray = response.getJSONArray("data");
-//                            JSONObject position0 = artistArray.getJSONObject(0);
-//                            String innerUrl = position0.getString("tracklist");
-//                            binding.textView.setText(innerUrl);
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    },
-//                    (error) -> {
-//                        // Handle error response
-//                        // Your code for handling errors (e.g., logging, displaying error message) goes here
-//                        Log.e(TAG, "Error:" + error.getMessage());
-//                    });
-//            queue.add(request);
-//
-//        });
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,17 +72,12 @@ public class SongSearchActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
 
         binding.buttonSong.setOnClickListener(click -> {
-            //binding.textViewSong.setText("Hello1");
             artistName = binding.editTextSong.getText().toString();
 
             // Construct the URL with the artist's name
             String url = null;
             try {
-
-                url =URL_REQUEST_DATA +
-                        //URL_REQUEST_DATA + artistName;
-                        URLEncoder.encode(artistName, "UTF-8");
-                //UnsupportedEncoding
+                url =URL_REQUEST_DATA + URLEncoder.encode(artistName, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
@@ -155,7 +112,6 @@ public class SongSearchActivity extends AppCompatActivity {
                         Log.e(TAG, "Error:" + error.getMessage());
                     });
             queue.add(request);
-            //binding.textViewSong.setText("Hello2");
         });
 
     }

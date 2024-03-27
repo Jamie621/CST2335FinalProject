@@ -42,32 +42,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-/*
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_1:
-                Intent sunriseIntent = new Intent(MainActivity.this, SunriseSunsetLookupActivity.class);
-                startActivity(sunriseIntent);
-                break;
-            case R.id.item_2:
-                Intent recipeIntent = new Intent(MainActivity.this, RecipeSearchActivity.class);
-                startActivity(recipeIntent);
-                break;
-            case R.id.item_3:
-                Intent dictionaryIntent = new Intent(MainActivity.this, DictionaryApiActivity.class);
-                startActivity(dictionaryIntent);
-                break;
-            case R.id.item_4:
-                Intent deezerIntent = new Intent(MainActivity.this, DeezerSongSearchApiActivity.class);
-                startActivity(deezerIntent);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-*/
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

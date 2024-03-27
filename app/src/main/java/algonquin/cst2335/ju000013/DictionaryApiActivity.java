@@ -79,7 +79,7 @@ public class DictionaryApiActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
     }
 
-    private void parseAndDisplayDefinitions(JSONArray response) {
+   /* private void parseAndDisplayDefinitions(JSONArray response) {
         try {
             List<Definition> definitions = new ArrayList<>();
             for (int i = 0; i < response.length(); i++) {
@@ -100,26 +100,84 @@ public class DictionaryApiActivity extends AppCompatActivity {
         } catch (Exception e) {
             runOnUiThread(() -> Toast.makeText(this, "Error parsing JSON response: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
+    }*/
+
+    private void parseAndDisplayDefinitions(JSONArray response) {
+        try {
+            List<Definition> definitions = new ArrayList<>();
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject entry = response.getJSONObject(i);
+                JSONArray meanings = entry.getJSONArray("meanings");
+                for (int j = 0; j < meanings.length(); j++) {
+                    JSONObject meaning = meanings.getJSONObject(j);
+                    JSONArray definitionsArray = meaning.getJSONArray("definitions");
+                    for (int k = 0; k < definitionsArray.length(); k++) {
+                        JSONObject definitionObject = definitionsArray.getJSONObject(k);
+                        String definitionText = definitionObject.getString("definition");
+                        final String word = entry.getString("word");
+
+                        // Create a WordEntity to insert
+                        WordEntity wordEntity = new WordEntity(word, definitionText);
+
+                        // Insert the WordEntity into the database and get the inserted ID
+                        long id = Executors.newSingleThreadExecutor().submit(() -> db.wordDao().insert(wordEntity)).get();
+
+                        // Now create the Definition object with the ID, word, and definition
+                        Definition definition = new Definition((int) id, word, definitionText);
+                        definitions.add(definition);
+                    }
+                }
+            }
+
+            // Since we are doing UI work, this needs to run on the main thread
+            runOnUiThread(() -> dictionaryAdapter.updateData(definitions));
+        } catch (Exception e) {
+            // Exception handling for both JSON parsing and database operation
+            runOnUiThread(() -> Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        }
     }
 
-    public void onDeleteDefinition(Definition definition) {
+
+
+
+
+    /*  public void onDeleteDefinition(Definition definition) {
         Executors.newSingleThreadExecutor().execute(() -> db.wordDao().delete(new WordEntity(definition.getWord(), definition.getDefinition())));
         Snackbar.make(findViewById(android.R.id.content), "Definition deleted", Snackbar.LENGTH_SHORT).show();
-    }
+    }*/
+  public void onDeleteDefinition(Definition definition) {
+      Executors.newSingleThreadExecutor().execute(() -> {
+          // Assuming that the definition object contains the correct id
+          WordEntity wordEntity = db.wordDao().getWordById(definition.getId());
+          if (wordEntity != null) {
+              db.wordDao().delete(wordEntity);
+              runOnUiThread(() -> {
+                  // You can update your UI to reflect the deletion here
+                  dictionaryAdapter.notifyDataSetChanged();
+              });
+          }
+      });
+  }
+
 
     private static class Definition {
+        private final int id;
         private final String word;
         private final String definition;
 
-        Definition(String word, String definition) {
+        Definition(int id, String word, String definition) {
+            this.id = id;
             this.word = word;
             this.definition = definition;
         }
 
+        // Getters (and setters if you need to modify the values)
+        public int getId() {
+            return id;
+        }
         public String getWord() {
             return word;
         }
-
         public String getDefinition() {
             return definition;
         }

@@ -20,5 +20,5 @@ public class WordEntity {
         this.definition = definition;
     }
 
-    // Getters and setters...
+
 }

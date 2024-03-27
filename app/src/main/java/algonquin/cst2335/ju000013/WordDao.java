@@ -7,6 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
+/*
 @Dao
 public interface WordDao {
     @Insert
@@ -17,4 +18,19 @@ public interface WordDao {
 
     @Delete
     void delete(WordEntity word);
+}
+*/
+
+@Dao
+public interface WordDao {
+    // Insert and Delete operations
+    @Insert
+    long insert(WordEntity word);
+
+    @Delete
+    void delete(WordEntity word);
+
+    // Make sure you have a method to get the word by ID if necessary
+    @Query("SELECT * FROM words WHERE id = :id")
+    WordEntity getWordById(int id);
 }

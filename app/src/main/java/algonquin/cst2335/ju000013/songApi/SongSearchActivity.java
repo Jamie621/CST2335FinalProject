@@ -1,8 +1,10 @@
 package algonquin.cst2335.ju000013.songApi;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,24 +64,24 @@ import java.util.concurrent.Executors;
 
 import algonquin.cst2335.ju000013.DictionaryApiActivity;
 import algonquin.cst2335.ju000013.R;
+import algonquin.cst2335.ju000013.databinding.SongInfoBinding;
 import algonquin.cst2335.ju000013.songApi.SongDAO;
 import algonquin.cst2335.ju000013.songApi.SongViewModel;
 import algonquin.cst2335.ju000013.songApi.SongDatabase;
-//import algonquin.cst2335.ju000013.songApi.SongNameBinding;
 import algonquin.cst2335.ju000013.databinding.ActivityMainBinding;
 import algonquin.cst2335.ju000013.databinding.ActivitySongSearchBinding;
 import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
+import algonquin.cst2335.ju000013.songApi.Song;
 
 public class SongSearchActivity extends AppCompatActivity {
     ActivitySongSearchBinding songBinding;
     ArrayList<Song> songsEntity;
+    Song song;
     SongViewModel songModel;
-    //RecyclerView recyclerViewSongs;
     RecyclerView.Adapter songAdapter;
     SongDatabase songDB;
     SongDAO sDAO;
     int postition;
-
 
 
     private final String URL_REQUEST_DATA = "https://api.deezer.com/search/artist/?q=";
@@ -121,34 +123,17 @@ public class SongSearchActivity extends AppCompatActivity {
         Toolbar tool_bar = findViewById(R.id.toolbar);
         setSupportActionBar(tool_bar);
 
-        songDB = Room.databaseBuilder(getApplicationContext(),SongDatabase.class, "database-name").build();
 
-        sDAO = songDB.sDAO();
 
-        //recyclerViewSongs = songBinding.recyclerViewSongs;
 
-        songBinding.recyclerViewSongs.setLayoutManager(new LinearLayoutManager(this));
-        songModel = new ViewModelProvider(this).get(SongViewModel.class);
-
-        songsEntity = songModel.songs.getValue();
-
-        if(songsEntity == null){
-            songModel.songs.postValue(songsEntity = new ArrayList<Song>());
-            ExecutorService threadSong = Executors.newSingleThreadExecutor();
-            threadSong.execute(()->{
-                songsEntity.addAll(sDAO.getAllMessages());
-                runOnUiThread(()->{
-                    songBinding.recyclerViewSongs.setAdapter(songAdapter);
-                        });
-                    });
-        }
 
 
 
         queue = Volley.newRequestQueue(this);
 
-        songBinding.buttonSong.setOnClickListener(click -> {
-            artistName = songBinding.editTextSong.getText().toString();
+        songBinding.btnSongSearch.setOnClickListener(click -> {
+
+            artistName = songBinding.etSong.getText().toString();
 
             // Construct the URL with the artist's name
             String url = null;
@@ -171,7 +156,7 @@ public class SongSearchActivity extends AppCompatActivity {
                                 JSONObject firstObject = dataArray.getJSONObject(0);
                                 // Get the tracklist URL from the first object
                                 tracklistUrl = firstObject.getString("tracklist");
-                                songBinding.textViewSong.setText(tracklistUrl);
+                                songBinding.tvUrl.setText(tracklistUrl);
 
                                 JsonObjectRequest tracklistRequest = new JsonObjectRequest(Request.Method.GET, tracklistUrl, null,
                                         (tracklistResponse) -> {
@@ -180,44 +165,45 @@ public class SongSearchActivity extends AppCompatActivity {
                                                 // Get the "data" array from the JSON response
                                                 JSONArray dataArray2 = tracklistResponse.getJSONArray("data");
 
-                                                songsEntity = new ArrayList<>();
+                                                //songsEntity = new ArrayList<>();
 
                                                 for (int i = 0; i < dataArray2.length(); i++) {
                                                     JSONObject songObject = dataArray2.getJSONObject(i);
                                                     String songTitle = songObject.getString("title");
                                                     int duration = songObject.getInt("duration");
+
                                                     JSONObject albumObject = songObject.getJSONObject("album");
                                                     String albumName = albumObject.getString("title");
                                                     String albumCoverUrl = albumObject.getString("cover");
 
                                                     // Create a new Song instance and add it to the list
-                                                    Song song = new Song(songTitle, duration, albumName, albumCoverUrl);
+                                                    song = new Song(songTitle, duration, albumName, albumCoverUrl);
                                                     songsEntity.add(song);
+
                                                 }
-
-
+//                                                songAdapter.notifyDataSetChanged();
 
                                                 if (dataArray2.length() > 0) {
                                                     // Get the first object from the array
                                                     JSONObject firstObject2 = dataArray2.getJSONObject(0);
                                                     // Get the title of the first song
-                                                    String songTitle = firstObject2.getString("title");
-                                                    songBinding.textViewName.setText(songTitle);
+                                                    String songTitle2 = firstObject2.getString("title");
+                                                    songBinding.tvSongName.setText(songTitle2);
 
                                                     // Get duration, album name, and album cover
-                                                    int duration = firstObject2.getInt("duration");
+                                                    int duration2 = firstObject2.getInt("duration");
                                                     JSONObject albumObject = firstObject2.getJSONObject("album");
-                                                    String albumName = albumObject.getString("title");
-                                                    String albumCoverUrl = albumObject.getString("cover");
+                                                    String albumName2 = albumObject.getString("title");
+                                                    String albumCoverUrl2 = albumObject.getString("cover");
 
                                                     // Update UI with album information
-                                                    songBinding.textViewDuration.setText("Duration: " + duration);
-                                                    songBinding.textViewAlbumName.setText("Album: " + albumName);
+                                                    songBinding.tvDuration.setText(String.valueOf(duration2));
+                                                    songBinding.tvAlbumName.setText(albumName2);
 
                                                     // Load album cover image using a separate thread
                                                     new Thread(() -> {
                                                         try {
-                                                            URL url3 = new URL(albumCoverUrl);
+                                                            URL url3 = new URL(albumCoverUrl2);
                                                             HttpURLConnection connection = (HttpURLConnection) url3.openConnection();
                                                             connection.setDoInput(true);
                                                             connection.connect();
@@ -225,12 +211,14 @@ public class SongSearchActivity extends AppCompatActivity {
                                                             final Bitmap bitmap = BitmapFactory.decodeStream(input);
 
                                                             // Update ImageView on the main UI thread
-                                                            runOnUiThread(() -> songBinding.imageViewAlbumCover.setImageBitmap(bitmap));
+                                                            runOnUiThread(() -> songBinding.ivAlbumCover.setImageBitmap(bitmap));
                                                         } catch (IOException e) {
                                                             Log.e(TAG, "Error downloading image: " + e.getMessage());
                                                         }
                                                     }).start();
                                                 }
+
+
                                             } catch (JSONException e) {
                                                 Log.e(TAG, "Error parsing tracklist JSON: " + e.getMessage());
                                             }
@@ -242,7 +230,7 @@ public class SongSearchActivity extends AppCompatActivity {
                                 queue.add(tracklistRequest);
                             } else {
                                 // No artist found with the given name
-                                songBinding.textViewSong.setText("No tracklist found for the artist: " + artistName);
+                                songBinding.tvUrl.setText("No tracklist found for the artist: " + artistName);
                             }
                         } catch (JSONException e) {
                             Log.e(TAG, "Error parsing JSON: " + e.getMessage());
@@ -253,6 +241,91 @@ public class SongSearchActivity extends AppCompatActivity {
                         Log.e(TAG, "Error fetching artist data: " + error.getMessage());
                     });
             queue.add(request);
+
+//            songBinding.rvSongs.setAdapter(songAdapter = new RecyclerView.Adapter<SongRowHolder>() {
+//                public SongRowHolder onCreateViewHolder(ViewGroup parent, int viewType){
+//                    SongInfoBinding bindingSongInfo = SongInfoBinding.inflate(getLayoutInflater());
+//                    //return new SongRowHolder(songBinding.getRoot());
+//                    return new SongRowHolder(bindingSongInfo.getRoot());
+//                }
+//
+//                public void onBindViewHolder(SongRowHolder songHolder,int position){
+//                    Song objSong = songsEntity.get(position);
+//
+//                    songHolder.songTitle.setText(objSong.getTitle());
+//                    songHolder.songDuration.setText(objSong.getDuration());
+//                    songHolder.songAlbumName.setText(objSong.getAlbumName());
+//
+//                    songHolder.songTitle.setText(objSong.getTitle());
+//                    songHolder.songDuration.setText(objSong.getDuration());
+//                    songHolder.songAlbumName.setText(objSong.getAlbumName());
+//
+//                    //songHolder.songAlbumCover.setImageBitmap(objSong.getAlbumCoverUrl());
+//                }
+//                public int getItemCount(){
+//                    return songsEntity.size();
+//                }
+//            });
+
+//            songAdapter = new RecyclerView.Adapter<SongRowHolder>() {
+//                public SongRowHolder onCreateViewHolder(ViewGroup parent, int viewType){
+//                    SongInfoBinding bindingSongInfo = SongInfoBinding.inflate(getLayoutInflater());
+//                    return new SongRowHolder(bindingSongInfo.getRoot());
+//                }
+//
+//                public void onBindViewHolder(SongRowHolder songHolder,int position){
+//                    Song objSong = songsEntity.get(position);
+//
+//                    songHolder.songTitle.setText(objSong.getTitle());
+//                    songHolder.songDuration.setText(objSong.getDuration());
+//                    songHolder.songAlbumName.setText(objSong.getAlbumName());
+//                }
+//                public int getItemCount(){
+//                    return songsEntity.size();
+//                }
+//            };
+
         });
+
+        songBinding.rvSongs.setLayoutManager(new LinearLayoutManager(this));
+
+        songModel = new ViewModelProvider(this).get(SongViewModel.class);
+        songsEntity = songModel.songs.getValue();
+
+        if (songsEntity == null) {
+            songModel.songs.postValue(songsEntity = new ArrayList<Song>());
+//            ExecutorService threadSong = Executors.newSingleThreadExecutor();
+//            threadSong.execute(()->{
+//                songsEntity.addAll(sDAO.getAllMessages());
+//                runOnUiThread(()->{
+//                    songBinding.rvSongs.setAdapter(songAdapter);
+//                        });
+//                    });
+        }
+
+//        songDB = Room.databaseBuilder(getApplicationContext(),SongDatabase.class, "database-name").build();
+//        sDAO = songDB.sDAO();
+//
+
+        //songAdapter.notifyDataSetChanged();
+
     }
+
+//    public static class SongRowHolder extends RecyclerView.ViewHolder {
+//        TextView songTitle;
+//        TextView songDuration;
+//        TextView songAlbumName;
+//        ImageView songAlbumCover;
+//
+//        public SongRowHolder(@NonNull View itemView) {
+//            super(itemView);
+//            songTitle = itemView.findViewById(R.id.textViewSongTitle);
+//            songDuration = itemView.findViewById(R.id.textViewSongDuration);
+//            songAlbumName = itemView.findViewById(R.id.textViewSongAlbumName);
+//            songAlbumCover = itemView.findViewById(R.id.imageViewSongAlbumCover);
+//        }
+//    }
 }
+
+
+

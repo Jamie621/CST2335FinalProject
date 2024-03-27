@@ -15,8 +15,8 @@
     <string name="dictionary_api">Dictionary API</string>
     <string name="hint_enter_word">Enter a word</string>
     <string name="search">Search</string>
-    <string name="help_dialog_message">Information about how to use the dictionary search feature.</string>
-    <string name="help_title">Help_Dictionary</string>
+    <string name="help_dialog_message">1.Search: Type the word you want to look up in the search bar and tap \'Search\'.\n2.View Definitions: Definitions and related information will appear below the search bar.\n3.Delete: Swipe left on a definition to remove it from your view.</string>
+    <string name="help_dialog_title">Help</string>
 
     <string name="deezer_song_search_api">Deezer song search api</string>
     <string name="Lookup">Lookup</string>

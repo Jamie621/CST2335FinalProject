@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AlertDialog;
 
 public class DictionaryApiActivity extends AppCompatActivity {
     private EditText editTextWord;
@@ -40,6 +41,8 @@ public class DictionaryApiActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
 
     private Toolbar toolbar; // Declare the Toolbar object
+
+    private static final int HELP_MENU_ITEM_ID = R.id.action_help;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +82,38 @@ public class DictionaryApiActivity extends AppCompatActivity {
     }
 
 
-    @Override
+  /*  @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish(); // Close this activity and return to the previous activity (if there is one)
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }*/
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+      int id = item.getItemId();
+      if (id == android.R.id.home) {
+          finish(); // Handle the up button action
+          return true;
+      } else if (id == HELP_MENU_ITEM_ID) {
+          showHelpDialog();
+          return true;
+      }
+      return super.onOptionsItemSelected(item);
+  }
+
+
+
+    private void showHelpDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.help_dialog_title)
+                .setMessage(R.string.help_dialog_message)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
     }
+
+
 
 
     @Override

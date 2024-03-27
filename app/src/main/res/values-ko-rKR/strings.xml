@@ -10,4 +10,6 @@
     <string name="help_dialog_message">사전 검색에 대한 정보</string>
     <string name="deezer_song_search_api">노래 검색</string>
     <string name="Lookup">찾기</string>
+    <string name="help_dialog_title">도움_사전검색</string>
+
 </resources>

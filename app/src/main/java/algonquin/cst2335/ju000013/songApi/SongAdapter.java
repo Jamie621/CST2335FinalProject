@@ -56,7 +56,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
                 Log.e(null, "Error downloading image: " + e.getMessage());
             }
         }).start();
-        //songViewHolder.songAlbumCover.setText(songsEntity.get(position).getAlbumCoverUrl());
     }
 
     @Override

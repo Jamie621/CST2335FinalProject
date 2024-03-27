@@ -157,7 +157,7 @@ public class SongSearchActivity extends AppCompatActivity {
                                 JSONObject firstObject = dataArray.getJSONObject(0);
                                 // Get the tracklist URL from the first object
                                 tracklistUrl = firstObject.getString("tracklist");
-                                songBinding.tvUrl.setText(tracklistUrl);
+                                //songBinding.tvUrl.setText(tracklistUrl);
 
                                 JsonObjectRequest tracklistRequest = new JsonObjectRequest(Request.Method.GET, tracklistUrl, null,
                                         (tracklistResponse) -> {
@@ -183,40 +183,40 @@ public class SongSearchActivity extends AppCompatActivity {
                                                 songAdapter.notifyDataSetChanged();
                                                 songViewModel.songs.setValue(songsEntity);
 
-                                                if (dataArray2.length() > 0) {
-                                                    // Get the first object from the array
-                                                    JSONObject firstObject2 = dataArray2.getJSONObject(0);
-                                                    // Get the title of the first song
-                                                    String songTitle2 = firstObject2.getString("title");
-                                                    songBinding.tvSongName.setText(songTitle2);
-
-                                                    // Get duration, album name, and album cover
-                                                    int duration2 = firstObject2.getInt("duration");
-                                                    JSONObject albumObject = firstObject2.getJSONObject("album");
-                                                    String albumName2 = albumObject.getString("title");
-                                                    String albumCoverUrl2 = albumObject.getString("cover");
-
-                                                    // Update UI with album information
-                                                    songBinding.tvDuration.setText(String.valueOf(duration2));
-                                                    songBinding.tvAlbumName.setText(albumName2);
-
-                                                    // Load album cover image using a separate thread
-                                                    new Thread(() -> {
-                                                        try {
-                                                            URL url3 = new URL(albumCoverUrl2);
-                                                            HttpURLConnection connection = (HttpURLConnection) url3.openConnection();
-                                                            connection.setDoInput(true);
-                                                            connection.connect();
-                                                            InputStream input = connection.getInputStream();
-                                                            final Bitmap bitmap = BitmapFactory.decodeStream(input);
-
-                                                            // Update ImageView on the main UI thread
-                                                            runOnUiThread(() -> songBinding.ivAlbumCover.setImageBitmap(bitmap));
-                                                        } catch (IOException e) {
-                                                            Log.e(TAG, "Error downloading image: " + e.getMessage());
-                                                        }
-                                                    }).start();
-                                                }
+//                                                if (dataArray2.length() > 0) {
+//                                                    // Get the first object from the array
+//                                                    JSONObject firstObject2 = dataArray2.getJSONObject(0);
+//                                                    // Get the title of the first song
+//                                                    String songTitle2 = firstObject2.getString("title");
+//                                                    songBinding.tvSongName.setText(songTitle2);
+//
+//                                                    // Get duration, album name, and album cover
+//                                                    int duration2 = firstObject2.getInt("duration");
+//                                                    JSONObject albumObject = firstObject2.getJSONObject("album");
+//                                                    String albumName2 = albumObject.getString("title");
+//                                                    String albumCoverUrl2 = albumObject.getString("cover");
+//
+//                                                    // Update UI with album information
+//                                                    songBinding.tvDuration.setText(String.valueOf(duration2));
+//                                                    songBinding.tvAlbumName.setText(albumName2);
+//
+//                                                    // Load album cover image using a separate thread
+//                                                    new Thread(() -> {
+//                                                        try {
+//                                                            URL url3 = new URL(albumCoverUrl2);
+//                                                            HttpURLConnection connection = (HttpURLConnection) url3.openConnection();
+//                                                            connection.setDoInput(true);
+//                                                            connection.connect();
+//                                                            InputStream input = connection.getInputStream();
+//                                                            final Bitmap bitmap = BitmapFactory.decodeStream(input);
+//
+//                                                            // Update ImageView on the main UI thread
+//                                                            runOnUiThread(() -> songBinding.ivAlbumCover.setImageBitmap(bitmap));
+//                                                        } catch (IOException e) {
+//                                                            Log.e(TAG, "Error downloading image: " + e.getMessage());
+//                                                        }
+//                                                    }).start();
+//                                                }
                                             } catch (JSONException e) {
                                                 Log.e(TAG, "Error parsing tracklist JSON: " + e.getMessage());
                                             }
@@ -228,7 +228,7 @@ public class SongSearchActivity extends AppCompatActivity {
                                 queue.add(tracklistRequest);
                             } else {
                                 // No artist found with the given name
-                                songBinding.tvUrl.setText("No tracklist found for the artist: " + artistName);
+                                //songBinding.tvUrl.setText("No tracklist found for the artist: " + artistName);
                             }
                         } catch (JSONException e) {
                             Log.e(TAG, "Error parsing JSON: " + e.getMessage());

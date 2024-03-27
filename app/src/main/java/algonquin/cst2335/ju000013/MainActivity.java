@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
 import algonquin.cst2335.ju000013.songApi.SongSearchActivity;
+import algonquin.cst2335.ju000013.sunrisesunsetApi.SunriseSunsetLookupActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_toobar, menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return true;
     }
 
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.item_1){
-
+            Intent intent = new Intent(MainActivity.this, SunriseSunsetLookupActivity.class);
+            startActivity(intent);
         } else if (id == R.id.item_2) {
             Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
@@ -59,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(tool_bar);
 
         // Set click listener for Sunrise & Sunset Lookup
-  /*      buttonSunriseSunsetLookup.setOnClickListener(new View.OnClickListener() {
+      buttonSunriseSunsetLookup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SunriseSunsetLookupActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
 
         // Set click listener for Recipe Search
         buttonRecipeSearch.setOnClickListener(click ->{

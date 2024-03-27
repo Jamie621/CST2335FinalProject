@@ -18,4 +18,22 @@
     <string name="Lookup">Lookup</string>
     <string name="error_msg">Please enter the name of a valid food</string>
 
+
+
+<!--Sunrise Sunset String -->
+    <string name="showCase">Sunrise &amp; Sunset Showcase</string>
+
+    <string name="lookUpButton">Lookup</string>
+    <string name="favouriteButton">Favourite Location</string>
+    <string name="saveLocationButton">Add to Favourite</string>
+
+    <string name="hintLatitude">Latitude From -90 to +90(N/S/E/W)
+                                \n(e.g. 90.000000N)</string>
+
+    <string name="hintLongitude">Latitude From -180 to +180(N/S/E/W)
+                                \n(e.g. 180.000000N)</string>
+
+
+<!-- -->
+
 </resources>

@@ -35,6 +35,14 @@ import algonquin.cst2335.ju000013.R;
 import algonquin.cst2335.ju000013.databinding.ActivitySavedRecipeBinding;
 import algonquin.cst2335.ju000013.databinding.SaveResultBinding;
 
+/** This page is a saved page for displaying saved recipes. User can see all the recipes saved in a recyclerView.
+ * User can click on each object to see details and delete as needed.
+ * There is a garage icon in the up-right corner to clear all saved in the account.
+ * There also a question icon in the up-right corner to show displays an AlertDialog with instructions for how to use the APP.
+ *
+ * @author Fei Wu
+ * @version 1.0
+ * */
 public class SavedRecipeActivity extends AppCompatActivity {
     ActivitySavedRecipeBinding binding;
     private  RecyclerView.Adapter savedAdapter;
@@ -43,6 +51,12 @@ public class SavedRecipeActivity extends AppCompatActivity {
     private RecipeSearchedDAO sDAO;
     RecyclerView recipeSavedRecycler;
 
+    /**
+     * Initializes the options menu for the activity.
+     *
+     * @param menu The options menu in which you place your items.
+     * @return true for the menu to be displayed; false it will not be shown.
+     */
     /* The point of this function is to load a Menu layout file. */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -51,6 +65,12 @@ public class SavedRecipeActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handles menu item selection.
+     *
+     * @param item The menu item that was selected.
+     * @return true if the selection was handled, otherwise false.
+     */
     /* When the user clicks on a menu item, Android will call this function. */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -81,6 +101,14 @@ public class SavedRecipeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,11 +178,19 @@ public class SavedRecipeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Inner class representing a row holder for the RecyclerView adapter.
+     */
     class MySavedRowHolder extends RecyclerView.ViewHolder {
         TextView recipe_saved_url;
         ImageView result_image;
         TextView recipe_saved_title;
 
+        /**
+         * Constructs a new MySavedRowHolder with the given View.
+         *
+         * @param itemView The View associated with the row holder.
+         */
         public MySavedRowHolder(@NonNull View itemView) {
             super(itemView);
             recipe_saved_url = itemView.findViewById(R.id.recipe_saved_url_text);
@@ -190,6 +226,15 @@ public class SavedRecipeActivity extends AppCompatActivity {
                 });
             });
         }
+
+        /**
+         * Shows an AlertDialog for deleting a saved recipe.
+         *
+         * @param title The title of the recipe.
+         * @param sourceUrl The source URL of the recipe.
+         * @param drawable The Drawable image of the recipe.
+         * @param recipeDetail The RecipeSearched object representing the recipe details.
+         */
         private void showDeleteAlertDialog(String title, String sourceUrl, Drawable drawable, RecipeSearched recipeDetail) {
             AlertDialog.Builder builder = new AlertDialog.Builder(SavedRecipeActivity.this);
             builder.setTitle(getString(R.string.recipe_remove_alert))

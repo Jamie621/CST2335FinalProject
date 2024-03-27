@@ -48,7 +48,13 @@ import java.util.concurrent.Executors;
 import algonquin.cst2335.ju000013.R;
 import algonquin.cst2335.ju000013.databinding.ActivityRecipeSearchBinding;
 import algonquin.cst2335.ju000013.databinding.SearchResultBinding;
-
+/** This page is a search page for recipe from https://spoonacular.com
+ * After search, user can see lists of related recipes and add favorite recipe to local database.
+ * User can view saved recipe as needed.
+ *
+ * @author Fei Wu
+ * @version 1.0
+ * */
 public class RecipeSearchActivity extends AppCompatActivity {
 
     ActivityRecipeSearchBinding binding;
@@ -71,6 +77,14 @@ public class RecipeSearchActivity extends AppCompatActivity {
     private final String URL_DETAIL_DATA = "https://api.spoonacular.com/recipes/";
     private final String URL_DETAIL_PARAM = "/information?apiKey=" + MY_KEY;
 
+    /**
+     * Called when the activity is starting.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,6 +206,13 @@ public class RecipeSearchActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Utility method to retrieve a bitmap image from a URL.
+     *
+     * @param url The URL of the image.
+     * @return The Bitmap image retrieved from the URL.
+     * @throws IOException If an I/O error occurs while retrieving the image.
+     */
     /* transfer String url to bitmap. */
     public static Bitmap getBitmap(String url) throws IOException {
         URL url1 = new URL(url);
@@ -202,11 +223,19 @@ public class RecipeSearchActivity extends AppCompatActivity {
         return BitmapFactory.decodeStream(inputStream);
     }
 
+    /**
+     * Inner class representing a row holder for the RecyclerView adapter.
+     */
     class MySearchRowHolder extends RecyclerView.ViewHolder {
         TextView result_title_text;
         ImageView result_image;
         TextView result_id_text;
 
+        /**
+         * Constructs a new MySearchRowHolder with the given View.
+         *
+         * @param itemView The View associated with the row holder.
+         */
         public MySearchRowHolder(@NonNull View itemView) {
             super(itemView);
             result_title_text = itemView.findViewById(R.id.recipe_title_text);
@@ -242,6 +271,15 @@ public class RecipeSearchActivity extends AppCompatActivity {
                 });
             });
         }
+
+        /**
+         * Shows an AlertDialog for saving a recipe.
+         *
+         * @param title The title of the recipe.
+         * @param sourceUrl The source URL of the recipe.
+         * @param drawable The Drawable image of the recipe.
+         * @param recipeDetail The RecipeSearched object representing the recipe details.
+         */
         private void showSaveAlertDialog(String title, String sourceUrl, Drawable drawable, RecipeSearched recipeDetail) {
             AlertDialog.Builder builder = new AlertDialog.Builder(RecipeSearchActivity.this);
             builder.setTitle(getString(R.string.recipe_save_alert))

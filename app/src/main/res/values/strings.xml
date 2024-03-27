@@ -33,6 +33,8 @@
     <string name="removed_alert">Deleted from your saved</string>
     <string name="recipe_delete_all">Delete all saved recipe</string>
     <string name="recipe_help">Recipe Instruction</string>
-    <string name="recipe_help_content">Click to show each recipe\'s Image, Summary and the source URL. \n\"YES\" to remove from saved; \"NO\" to cancel.\nThere is a garage icon in the up-right corner can clear all you saved.</string>
+    <string name="recipe_help_content">Click to show each recipe\'s Image, Summary and the source URL.
+        \n\n\"YES\" to remove from saved; \"NO\" to cancel.
+        \n\nThere is a garage icon in the up-right corner can clear all you saved.</string>
 
 </resources>

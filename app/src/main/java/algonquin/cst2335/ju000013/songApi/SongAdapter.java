@@ -1,6 +1,7 @@
 package algonquin.cst2335.ju000013.songApi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,6 +76,22 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             songDuration = itemView.findViewById(R.id.textViewSongDuration);
             songAlbumName = itemView.findViewById(R.id.textViewSongAlbumName);
             songAlbumCover = itemView.findViewById(R.id.imageViewSongAlbumCover);
+
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    Song song = songsEntity.get(position);
+                    // Handle click event
+                    Toast.makeText(context, "Item clicked: " + song.getTitle(), Toast.LENGTH_SHORT).show();
+                    // Start SongDetailsActivity and pass song details as extras
+                    Intent intent = new Intent(context, SongDetailsActivity.class);
+                    intent.putExtra("title", song.getTitle());
+                    intent.putExtra("duration", song.getDuration());
+                    intent.putExtra("albumName", song.getAlbumName());
+                    intent.putExtra("albumCoverUrl", song.getAlbumCoverUrl());
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

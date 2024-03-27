@@ -32,18 +32,23 @@
             android:exported="false">
         </activity>-->
 
-
-
         <activity
             android:name=".DictionaryApiActivity"
 
             android:exported="false" />
 
-
         <activity
             android:name=".songApi.SongSearchActivity"
             android:exported="false">
         </activity>
+
+        <activity
+            android:name=".songApi.SongDetailsActivity"
+            android:exported="false"
+            android:label="@string/app_name">
+            <!-- Remove the intent filter for LAUNCHER category -->
+        </activity>
+
 
 
     </application>

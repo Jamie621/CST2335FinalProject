@@ -55,9 +55,14 @@ public class SongSearchActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.item_1) {
+        if (id == android.R.id.home) { // Handle the Up button click
+            onBackPressed(); // Go back to the previous activity
+            return true;
+        }
+        else if (id == R.id.item_1) {
 
-        } else if (id == R.id.item_2) {
+        }
+        else if (id == R.id.item_2) {
             Intent intent = new Intent(SongSearchActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
         } else if (id == R.id.item_3) {
@@ -69,7 +74,22 @@ public class SongSearchActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.item_1) {
+//
+//        } else if (id == R.id.item_2) {
+//            Intent intent = new Intent(SongSearchActivity.this, RecipeSearchActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.item_3) {
+//            Intent intent = new Intent(SongSearchActivity.this, DictionaryApiActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.item_4) {
+//            Intent intent = new Intent(SongSearchActivity.this, SongSearchActivity.class);
+//            startActivity(intent);
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +98,7 @@ public class SongSearchActivity extends AppCompatActivity {
 
         Toolbar tool_bar = findViewById(R.id.toolbar);
         setSupportActionBar(tool_bar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Enable Up button in the toolbar
 
         songViewModel = new ViewModelProvider(this).get(SongViewModel.class);
         songsEntity = songViewModel.songs.getValue();
@@ -163,6 +184,7 @@ public class SongSearchActivity extends AppCompatActivity {
         songBinding.rvSongs.setLayoutManager(new LinearLayoutManager(this));
         songAdapter = new SongAdapter(songsEntity,this);
         songBinding.rvSongs.setAdapter(songAdapter);
+
     }
 
 }

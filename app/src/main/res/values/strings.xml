@@ -17,5 +17,6 @@
 
     <string name="Lookup">Lookup</string>
     <string name="error_msg">Please enter the name of a valid food</string>
+    <string name="song_search">type artist name</string>
 
 </resources>

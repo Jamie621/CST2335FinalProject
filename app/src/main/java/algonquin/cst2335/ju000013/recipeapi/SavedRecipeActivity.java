@@ -239,7 +239,7 @@ public class SavedRecipeActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(SavedRecipeActivity.this);
             builder.setTitle(getString(R.string.recipe_remove_alert))
                     .setIcon(drawable)
-                    .setMessage(title + "\n" + sourceUrl)
+                    .setMessage(title + "\n" +"\n" +  sourceUrl)
                     .setNegativeButton(getString(R.string.recipe_no), (dialog, cl) -> {})
                     .setPositiveButton(getString(R.string.recipe_yes), (dialog, cl) -> {
                         Executors.newSingleThreadExecutor().execute(() -> {

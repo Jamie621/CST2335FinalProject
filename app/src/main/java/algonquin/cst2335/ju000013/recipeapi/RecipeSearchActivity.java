@@ -154,22 +154,22 @@ public class RecipeSearchActivity extends AppCompatActivity {
             searchText = editSearchText.getText().toString();
             try {
                 if(!searchText.isEmpty()){
-                    // Clear the previous search results
+                    // Clear the previous search results from arrayList
                     searchedRecipes.clear();
                     searchAdapter.notifyDataSetChanged();// Notify the adapter that the data set has changed
 
-                    String url = URL_REQUEST_DATA + URLEncoder.encode(searchText, "UTF-8") + URL_API_PARAM;
+                    String url = URL_REQUEST_DATA + URLEncoder.encode(searchText, getString(R.string.recipe_utf_8)) + URL_API_PARAM;
 
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                             (response -> {
                                 try {
-                                    Log.d(TAG, "Response: " + response.toString());
-                                    JSONArray results = response.getJSONArray("results");
+                                    Log.d(TAG, getString(R.string.recipe_web_response) + response.toString());
+                                    JSONArray results = response.getJSONArray(getString(R.string.recipe_json_array_name));
                                     for (int i = 0; i < results.length(); i++) {
                                         JSONObject jsonObject = results.getJSONObject(i);
-                                        String title = jsonObject.getString("title");
-                                        String image = jsonObject.getString("image");
-                                        int id = jsonObject.getInt("id");
+                                        String title = jsonObject.getString(getString(R.string.recipe_json_title));
+                                        String image = jsonObject.getString(getString(R.string.recipe_json_image));
+                                        int id = jsonObject.getInt(getString(R.string.recipe_json_id));
                                         String sourceUrl = URL_DETAIL_DATA + id + URL_DETAIL_PARAM;
                                         /* add to search result arraylist*/
                                         searchedRecipes.add(new RecipeSearched(title, image, id, sourceUrl));
@@ -181,22 +181,22 @@ public class RecipeSearchActivity extends AppCompatActivity {
                             }),
                             (error -> {
                                 Log.e(TAG, "Error:" + error.getMessage());
-                                Snackbar.make(click, R.string.error_msg, Toast.LENGTH_SHORT).show();
+                                Snackbar.make(click, R.string.recipe_error_msg, Toast.LENGTH_SHORT).show();
                             }));
                     queue.add(request);
                 } else {
-                    Snackbar.make(click, R.string.error_msg, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(click, R.string.recipe_error_msg, Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Error encoding recipe name");
+                Log.e(TAG, getString(R.string.error_encoding_recipe_name));
             }
             /* save search text to SharedPreference */
-            editor.putString("SearchText", searchText);
+            editor.putString(getString(R.string.recipe_search_content), searchText);
             editor.apply();
         });
 
         /* achieve search text from SharedPreference */
-        String searchText = prefs.getString("SearchText", "");
+        String searchText = prefs.getString(getString(R.string.recipe_search_content), "");
         editSearchText.setText(searchText);
 
         /* view saved favorite recipes button. jump to the next page. */
@@ -284,13 +284,13 @@ public class RecipeSearchActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(RecipeSearchActivity.this);
             builder.setTitle(getString(R.string.recipe_save_alert))
                     .setIcon(drawable)
-                    .setMessage(title + "\n" + sourceUrl)
+                    .setMessage(title + "\n" +"\n" + sourceUrl)
                     .setNegativeButton(getString(R.string.recipe_no), (dialog, cl) -> {})
                     .setPositiveButton(getString(R.string.recipe_yes), (dialog, cl) -> {
                         Executors.newSingleThreadExecutor().execute(() -> {
                             sDAO.insertRecipe(recipeDetail); // insert into database
                         });
-                        Toast.makeText(RecipeSearchActivity.this, getString(R.string.add_alert), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RecipeSearchActivity.this, getString(R.string.recipe_add_alert), Toast.LENGTH_SHORT).show();
                     })
                     .show();
         }

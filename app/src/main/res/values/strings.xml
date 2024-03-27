@@ -16,12 +16,12 @@
     <string name="deezer_song_search_api">Deezer song search api</string>
 
     <string name="Lookup">Lookup</string>
-    <string name="error_msg">Please enter the name of a valid food</string>
+    <string name="recipe_error_msg">Please enter the name of a valid food</string>
     <string name="recipe_save_alert">Do you want to save as favorite?</string>
     <string name="recipe_no">NO</string>
     <string name="recipe_yes">YES</string>
-    <string name="add_alert">You add it to your Favorites.</string>
-    <string name="recipe_search_text">Enter Here</string>
+    <string name="recipe_add_alert">You add it to your Favorites.</string>
+    <string name="recipe_search_hint">Enter Here</string>
     <string name="recipe_search_button">SEARCH</string>
     <string name="view_favorite_recipes_button">SAVED FAVORITE RECIPES</string>
     <string name="recipe_source_url">Source Url</string>
@@ -36,5 +36,15 @@
     <string name="recipe_help_content">Click to show each recipe\'s Image, Summary and the source URL.
         \n\n\"YES\" to remove from saved; \"NO\" to cancel.
         \n\nThere is a garage icon in the up-right corner can clear all you saved.</string>
+    <string name="recipe_json_array_name">results</string>
+    <string name="recipe_json_title">title</string>
+    <string name="recipe_json_image">image</string>
+    <string name="recipe_json_id">id</string>
+    <string name="recipe_web_response">"Response: "</string>
+    <string name="recipe_utf_8">UTF-8</string>
+    <string name="recipe_search_content">SearchText</string>
+    <string name="error_encoding_recipe_name">Error encoding recipe name</string>
+    <string name="recipe_id">ID</string>
+    <string name="recipe_title">Title</string>
 
 </resources>

@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/recipe_search_text"
+        android:hint="@string/recipe_search_hint"
         app:layout_constraintEnd_toStartOf="@+id/buttonSearchRecipe"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="20dp"

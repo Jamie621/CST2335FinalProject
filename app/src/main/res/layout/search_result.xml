@@ -18,7 +18,7 @@
         android:id="@+id/recipe_result_id_text"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="ID"
+        android:text="@string/recipe_id"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_result_image"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,7 +30,7 @@
         android:id="@+id/recipe_title_text"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:text="@string/recipe_title"
         app:layout_constraintBottom_toBottomOf="@+id/recipe_result_image"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />

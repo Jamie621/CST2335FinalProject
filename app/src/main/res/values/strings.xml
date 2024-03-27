@@ -10,12 +10,12 @@
     <string name="app_name">CST2335FinalProject</string>
     <string name="Final_Project" translatable="false">Final Project</string>
 
-    <string name="sunrise_sunset_lookup">Sunrise &amp; Sunset lookup</string>
+    <string name="sunrise_sunset_lookup" translatable="false">Sunrise &amp; Sunset lookup</string>
     <string name="recipe_search">Recipe Search</string>
-    <string name="dictionary_api">Dictionary API</string>
-    <string name="deezer_song_search_api">Deezer song search api</string>
+    <string name="dictionary_api" translatable="false">Dictionary API</string>
+    <string name="deezer_song_search_api" translatable="false">Deezer song search api</string>
 
-    <string name="Lookup">Lookup</string>
+    <string name="Lookup" translatable="false">Lookup</string>
     <string name="recipe_error_msg">Please enter the name of a valid food</string>
     <string name="recipe_save_alert">Do you want to save as favorite?</string>
     <string name="recipe_no">NO</string>
@@ -33,18 +33,16 @@
     <string name="removed_alert">Deleted from your saved</string>
     <string name="recipe_delete_all">Delete all saved recipe</string>
     <string name="recipe_help">Recipe Instruction</string>
-    <string name="recipe_help_content">Click to show each recipe\'s Image, Summary and the source URL.
-        \n\n\"YES\" to remove from saved; \"NO\" to cancel.
-        \n\nThere is a garage icon in the up-right corner can clear all you saved.</string>
+    <string name="recipe_help_content">Click to show each recipe\'s Image, Summary and the source URL.           \"YES\" to remove from saved; \"NO\" to cancel.           There is a garage icon in the up-right corner can clear all you saved.</string>
     <string name="recipe_json_array_name">results</string>
     <string name="recipe_json_title">title</string>
     <string name="recipe_json_image">image</string>
-    <string name="recipe_json_id">id</string>
+    <string name="recipe_json_id" translatable="false">id</string>
     <string name="recipe_web_response">"Response: "</string>
-    <string name="recipe_utf_8">UTF-8</string>
+    <string name="recipe_utf_8" translatable="false">UTF-8</string>
     <string name="recipe_search_content">SearchText</string>
     <string name="error_encoding_recipe_name">Error encoding recipe name</string>
-    <string name="recipe_id">ID</string>
+    <string name="recipe_id" translatable="false">ID</string>
     <string name="recipe_title">Title</string>
 
 </resources>

@@ -10,11 +10,15 @@ import java.util.List;
 @Dao
 public interface SongDAO {
     @Insert
-    public long insertSong (Song s);
+    long insertSong(Song song); // Change return type to long
 
-    @Query("Select * from Song")
-    public List<Song> getAllMessages();
+    @Query("SELECT * FROM Song")
+    List<Song> getAllSongs(); // Rename method to getAllSongs
 
     @Delete
-    Void deleteMessage (Song s);
+    void deleteSong(Song song); // Change method name to deleteSong
+
+    // Add a method to delete all songs
+    @Query("DELETE FROM Song")
+    void deleteAllSongs();
 }

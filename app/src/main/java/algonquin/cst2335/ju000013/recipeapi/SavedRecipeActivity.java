@@ -183,17 +183,14 @@ public class SavedRecipeActivity extends AppCompatActivity {
                         }
                         // Show AlertDialog on UI thread
                         Drawable finalDrawable = drawable;
-                        runOnUiThread(() -> showDeleteAlertDialog(title, sourceUrl, finalDrawable, recipeDetail, position));
+                        runOnUiThread(() -> showDeleteAlertDialog(title, sourceUrl, finalDrawable, recipeDetail));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    // update the Adapter object that something's been removed so the RecyclerView can update itself
-//                    runOnUiThread( () -> savedAdapter.notifyItemRemoved(position));
-                    runOnUiThread(() -> savedAdapter.notifyDataSetChanged());
                 });
             });
         }
-        private void showDeleteAlertDialog(String title, String sourceUrl, Drawable drawable, RecipeSearched recipeDetail, Integer position) {
+        private void showDeleteAlertDialog(String title, String sourceUrl, Drawable drawable, RecipeSearched recipeDetail) {
             AlertDialog.Builder builder = new AlertDialog.Builder(SavedRecipeActivity.this);
             builder.setTitle(getString(R.string.recipe_remove_alert))
                     .setIcon(drawable)
@@ -202,8 +199,10 @@ public class SavedRecipeActivity extends AppCompatActivity {
                     .setPositiveButton(getString(R.string.recipe_yes), (dialog, cl) -> {
                         Executors.newSingleThreadExecutor().execute(() -> {
                             sDAO.deleteSavedResult(recipeDetail); // delete from database
+                            int position = savedRecipes.indexOf(recipeDetail); // get the position of this object
                             savedRecipes.remove(position); // delete from arrayList
-
+                            // update the Adapter object that something's been removed so the RecyclerView can update itself
+                            runOnUiThread( () -> savedAdapter.notifyItemRemoved(position));
                         });
                         Toast.makeText(SavedRecipeActivity.this, getString(R.string.removed_alert), Toast.LENGTH_SHORT).show();
                     })

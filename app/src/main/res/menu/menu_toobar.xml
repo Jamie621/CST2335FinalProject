@@ -17,7 +17,16 @@
         android:id="@+id/item_3"
         android:icon="@drawable/dictionary"
         android:title="Dictionary API"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
+
+<!--
+    <item
+        android:id="@+id/action_dictionary"
+        android:icon="@drawable/dictionary"
+    android:title="@string/dictionary_api"
+    app:showAsAction="ifRoom"/>
+-->
+
 
     <item
         android:id="@+id/item_4"

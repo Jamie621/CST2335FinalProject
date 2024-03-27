@@ -7,14 +7,26 @@
     android:layout_height="match_parent"
     tools:context=".DictionaryApiActivity">
 
-    <androidx.appcompat.widget.Toolbar
+ <!--   <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_dictionary"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>-->
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_dictionary"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+
 
     <EditText
         android:id="@+id/word_search_input"

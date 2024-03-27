@@ -3,6 +3,8 @@ package algonquin.cst2335.ju000013;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,6 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
+import androidx.appcompat.widget.Toolbar;
 
 public class DictionaryApiActivity extends AppCompatActivity {
     private EditText editTextWord;
@@ -36,10 +39,17 @@ public class DictionaryApiActivity extends AppCompatActivity {
     private AppDatabase db;
     private SharedPreferences sharedPreferences;
 
+    private Toolbar toolbar; // Declare the Toolbar object
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dictionary_search);
+
+        toolbar = findViewById(R.id.toolbar_dictionary); // Initialize the Toolbar
+        setSupportActionBar(toolbar); // Set the Toolbar as the ActionBar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Enable the Up button
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         sharedPreferences = getSharedPreferences("DictionaryPreferences", MODE_PRIVATE);
         editTextWord = findViewById(R.id.word_search_input);
@@ -67,6 +77,24 @@ public class DictionaryApiActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // Close this activity and return to the previous activity (if there is one)
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dictionary, menu);
+        return true;
+    }
+
 
     private void fetchDefinitions(String word) {
         String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
@@ -214,6 +242,9 @@ public class DictionaryApiActivity extends AppCompatActivity {
         public int getItemCount() {
             return definitions.size();
         }
+
+
+
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView textViewDefinition;

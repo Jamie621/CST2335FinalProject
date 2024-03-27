@@ -157,7 +157,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
                                         String image = jsonObject.getString("image");
                                         int id = jsonObject.getInt("id");
                                         String sourceUrl = URL_DETAIL_DATA + id + URL_DETAIL_PARAM;
-                                        /* add to arraylist*/
+                                        /* add to search result arraylist*/
                                         searchedRecipes.add(new RecipeSearched(title, image, id, sourceUrl));
 
                                     }searchAdapter.notifyItemInserted(searchedRecipes.size()-1);
@@ -242,7 +242,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
                 });
             });
         }
-        public void showSaveAlertDialog(String title, String sourceUrl, Drawable drawable, RecipeSearched recipeDetail) {
+        private void showSaveAlertDialog(String title, String sourceUrl, Drawable drawable, RecipeSearched recipeDetail) {
             AlertDialog.Builder builder = new AlertDialog.Builder(RecipeSearchActivity.this);
             builder.setTitle(getString(R.string.recipe_save_alert))
                     .setIcon(drawable)

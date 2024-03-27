@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -52,9 +55,9 @@ public class SavedRecipeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        AlertDialog.Builder builder = new AlertDialog.Builder( SavedRecipeActivity.this );
         if (id == R.id.recipe_delete_all){
             // delete all in database
-            AlertDialog.Builder builder = new AlertDialog.Builder( SavedRecipeActivity.this );
             builder.setTitle(R.string.recipe_remove_all)
                     .setNegativeButton(getString(R.string.recipe_no), (dialog, cl) -> {})
                     .setPositiveButton(getString(R.string.recipe_yes), (dialog, cl) -> {
@@ -68,6 +71,12 @@ public class SavedRecipeActivity extends AppCompatActivity {
                     })
                     .create()
                     .show();
+        } else if (id == R.id.recipe_help) {
+            // help menu item that displays an AlertDialog with instructions for how to use the recipe app
+            builder.setMessage(R.string.recipe_help_content)
+                    .create()
+                    .show();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -145,13 +154,60 @@ public class SavedRecipeActivity extends AppCompatActivity {
         TextView recipe_saved_url;
         ImageView result_image;
         TextView recipe_saved_title;
-        Button recipe_remove_button;
+
         public MySavedRowHolder(@NonNull View itemView) {
             super(itemView);
             recipe_saved_url = itemView.findViewById(R.id.recipe_saved_url_text);
             result_image = itemView.findViewById(R.id.recipe_result_image);
             recipe_saved_title = itemView.findViewById(R.id.recipe_saved_title_text);
-            recipe_remove_button = itemView.findViewById(R.id.recipe_remove_button);
+
+            /* show detail when you click the item (row). */
+            itemView.setOnClickListener(click -> {
+                // tell you which row (position) this row is currently in the adapter object.
+                int position = getAbsoluteAdapterPosition();
+
+                /* show detail and ask for delete or not */
+                RecipeSearched recipeDetail = savedRecipes.get(position);
+                String title = recipeDetail.getTitle();
+                String image_url = recipeDetail.getImage_url();
+                String sourceUrl = recipeDetail.getSource_url();
+                Executor thread = Executors.newSingleThreadExecutor();
+                thread.execute(() ->
+                {
+                    try {
+                        Bitmap bitmap = getBitmap(image_url);
+                        // Convert Bitmap to Drawable
+                        Drawable drawable = null;
+                        if (bitmap != null) {
+                            drawable = new BitmapDrawable(getResources(), bitmap);
+                        }
+                        // Show AlertDialog on UI thread
+                        Drawable finalDrawable = drawable;
+                        runOnUiThread(() -> showDeleteAlertDialog(title, sourceUrl, finalDrawable, recipeDetail, position));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    // update the Adapter object that something's been removed so the RecyclerView can update itself
+//                    runOnUiThread( () -> savedAdapter.notifyItemRemoved(position));
+                    runOnUiThread(() -> savedAdapter.notifyDataSetChanged());
+                });
+            });
+        }
+        private void showDeleteAlertDialog(String title, String sourceUrl, Drawable drawable, RecipeSearched recipeDetail, Integer position) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(SavedRecipeActivity.this);
+            builder.setTitle(getString(R.string.recipe_remove_alert))
+                    .setIcon(drawable)
+                    .setMessage(title + "\n" + sourceUrl)
+                    .setNegativeButton(getString(R.string.recipe_no), (dialog, cl) -> {})
+                    .setPositiveButton(getString(R.string.recipe_yes), (dialog, cl) -> {
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            sDAO.deleteSavedResult(recipeDetail); // delete from database
+                            savedRecipes.remove(position); // delete from arrayList
+
+                        });
+                        Toast.makeText(SavedRecipeActivity.this, getString(R.string.removed_alert), Toast.LENGTH_SHORT).show();
+                    })
+                    .show();
         }
     }
 }

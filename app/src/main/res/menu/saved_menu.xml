@@ -3,8 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/recipe_help"
+        android:icon="@drawable/recipe_help_icon"
+        android:title="@string/recipe_help"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/recipe_delete_all"
         android:icon="@drawable/recipe_delete"
-        android:title="Item"
+        android:title="@string/recipe_delete_all"
         app:showAsAction="always" />
 </menu>

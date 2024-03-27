@@ -33,12 +33,7 @@
             android:exported="true">
         </activity>
         -->
-        <!--
-        <activity
-            android:name=".RecipeSearchActivity"
-            android:exported="true">
-        </activity>
-        -->
+
         <activity
             android:name=".DictionaryApiActivity"
             android:exported="false" />

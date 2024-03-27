@@ -77,8 +77,8 @@ public class SongSearchActivity extends AppCompatActivity {
     ActivitySongSearchBinding songBinding;
     ArrayList<Song> songsEntity;
     Song song;
-    SongViewModel songModel;
-    RecyclerView.Adapter songAdapter;
+    SongViewModel songViewModel;
+    SongAdapter songAdapter;
     SongDatabase songDB;
     SongDAO sDAO;
     int postition;
@@ -123,11 +123,12 @@ public class SongSearchActivity extends AppCompatActivity {
         Toolbar tool_bar = findViewById(R.id.toolbar);
         setSupportActionBar(tool_bar);
 
+        songViewModel = new ViewModelProvider(this).get(SongViewModel.class);
+        songsEntity = songViewModel.songs.getValue();
 
-
-
-
-
+        if (songsEntity == null) {
+            songViewModel.songs.postValue(songsEntity = new ArrayList<>());
+        }
 
         queue = Volley.newRequestQueue(this);
 
@@ -165,8 +166,6 @@ public class SongSearchActivity extends AppCompatActivity {
                                                 // Get the "data" array from the JSON response
                                                 JSONArray dataArray2 = tracklistResponse.getJSONArray("data");
 
-                                                //songsEntity = new ArrayList<>();
-
                                                 for (int i = 0; i < dataArray2.length(); i++) {
                                                     JSONObject songObject = dataArray2.getJSONObject(i);
                                                     String songTitle = songObject.getString("title");
@@ -181,7 +180,8 @@ public class SongSearchActivity extends AppCompatActivity {
                                                     songsEntity.add(song);
 
                                                 }
-//                                                songAdapter.notifyDataSetChanged();
+                                                songAdapter.notifyDataSetChanged();
+                                                songViewModel.songs.setValue(songsEntity);
 
                                                 if (dataArray2.length() > 0) {
                                                     // Get the first object from the array
@@ -217,8 +217,6 @@ public class SongSearchActivity extends AppCompatActivity {
                                                         }
                                                     }).start();
                                                 }
-
-
                                             } catch (JSONException e) {
                                                 Log.e(TAG, "Error parsing tracklist JSON: " + e.getMessage());
                                             }
@@ -241,90 +239,29 @@ public class SongSearchActivity extends AppCompatActivity {
                         Log.e(TAG, "Error fetching artist data: " + error.getMessage());
                     });
             queue.add(request);
-
-//            songBinding.rvSongs.setAdapter(songAdapter = new RecyclerView.Adapter<SongRowHolder>() {
-//                public SongRowHolder onCreateViewHolder(ViewGroup parent, int viewType){
-//                    SongInfoBinding bindingSongInfo = SongInfoBinding.inflate(getLayoutInflater());
-//                    //return new SongRowHolder(songBinding.getRoot());
-//                    return new SongRowHolder(bindingSongInfo.getRoot());
-//                }
-//
-//                public void onBindViewHolder(SongRowHolder songHolder,int position){
-//                    Song objSong = songsEntity.get(position);
-//
-//                    songHolder.songTitle.setText(objSong.getTitle());
-//                    songHolder.songDuration.setText(objSong.getDuration());
-//                    songHolder.songAlbumName.setText(objSong.getAlbumName());
-//
-//                    songHolder.songTitle.setText(objSong.getTitle());
-//                    songHolder.songDuration.setText(objSong.getDuration());
-//                    songHolder.songAlbumName.setText(objSong.getAlbumName());
-//
-//                    //songHolder.songAlbumCover.setImageBitmap(objSong.getAlbumCoverUrl());
-//                }
-//                public int getItemCount(){
-//                    return songsEntity.size();
-//                }
-//            });
-
-//            songAdapter = new RecyclerView.Adapter<SongRowHolder>() {
-//                public SongRowHolder onCreateViewHolder(ViewGroup parent, int viewType){
-//                    SongInfoBinding bindingSongInfo = SongInfoBinding.inflate(getLayoutInflater());
-//                    return new SongRowHolder(bindingSongInfo.getRoot());
-//                }
-//
-//                public void onBindViewHolder(SongRowHolder songHolder,int position){
-//                    Song objSong = songsEntity.get(position);
-//
-//                    songHolder.songTitle.setText(objSong.getTitle());
-//                    songHolder.songDuration.setText(objSong.getDuration());
-//                    songHolder.songAlbumName.setText(objSong.getAlbumName());
-//                }
-//                public int getItemCount(){
-//                    return songsEntity.size();
-//                }
-//            };
-
         });
 
         songBinding.rvSongs.setLayoutManager(new LinearLayoutManager(this));
+        songAdapter = new SongAdapter(songsEntity,this);
+        songBinding.rvSongs.setAdapter(songAdapter);
 
-        songModel = new ViewModelProvider(this).get(SongViewModel.class);
-        songsEntity = songModel.songs.getValue();
-
-        if (songsEntity == null) {
-            songModel.songs.postValue(songsEntity = new ArrayList<Song>());
-//            ExecutorService threadSong = Executors.newSingleThreadExecutor();
-//            threadSong.execute(()->{
-//                songsEntity.addAll(sDAO.getAllMessages());
-//                runOnUiThread(()->{
-//                    songBinding.rvSongs.setAdapter(songAdapter);
-//                        });
-//                    });
-        }
+//        if (songsEntity == null) {
+//            songViewModel.songs.postValue(songsEntity = new ArrayList<Song>());
+////            ExecutorService threadSong = Executors.newSingleThreadExecutor();
+////            threadSong.execute(()->{
+////                songsEntity.addAll(sDAO.getAllMessages());
+////                runOnUiThread(()->{
+////                    songBinding.rvSongs.setAdapter(songAdapter);
+////                        });
+////                    });
+//       }
 
 //        songDB = Room.databaseBuilder(getApplicationContext(),SongDatabase.class, "database-name").build();
 //        sDAO = songDB.sDAO();
-//
 
-        //songAdapter.notifyDataSetChanged();
 
     }
 
-//    public static class SongRowHolder extends RecyclerView.ViewHolder {
-//        TextView songTitle;
-//        TextView songDuration;
-//        TextView songAlbumName;
-//        ImageView songAlbumCover;
-//
-//        public SongRowHolder(@NonNull View itemView) {
-//            super(itemView);
-//            songTitle = itemView.findViewById(R.id.textViewSongTitle);
-//            songDuration = itemView.findViewById(R.id.textViewSongDuration);
-//            songAlbumName = itemView.findViewById(R.id.textViewSongAlbumName);
-//            songAlbumCover = itemView.findViewById(R.id.imageViewSongAlbumCover);
-//        }
-//    }
 }
 
 

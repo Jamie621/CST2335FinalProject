@@ -20,4 +20,5 @@ public class LocationValidator {
     public static boolean isValidLongitude(String longitude) {
         return !TextUtils.isEmpty(longitude) && LONGITUDE_PATTERN.matcher(longitude).matches();
     }
+
 }

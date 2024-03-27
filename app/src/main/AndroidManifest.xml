@@ -18,7 +18,6 @@
             android:name=".sunrisesunsetApi.SunriseSunsetLookupActivity"
             android:exported="true" />
 
-
         <activity
             android:name=".recipeapi.RecipeSearchActivity"
             android:exported="false" />

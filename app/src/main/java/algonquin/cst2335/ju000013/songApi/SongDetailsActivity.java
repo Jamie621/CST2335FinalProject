@@ -1,14 +1,19 @@
 package algonquin.cst2335.ju000013.songApi;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.room.Room;
 
 import java.io.IOException;
@@ -16,18 +21,56 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import algonquin.cst2335.ju000013.DictionaryApiActivity;
+import algonquin.cst2335.ju000013.R;
 import algonquin.cst2335.ju000013.databinding.ActivitySongDetailsBinding;
+import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
 
 public class SongDetailsActivity extends AppCompatActivity {
 
     private ActivitySongDetailsBinding songDetailsBinding;
     private SongDatabase songDatabase;
     private SongDAO songDAO;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_toobar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) { // Handle the Up button click
+            onBackPressed(); // Go back to the previous activity
+            return true;
+        }
+        else if (id == R.id.item_1) {
+
+        }
+        else if (id == R.id.item_2) {
+            Intent intent = new Intent(SongDetailsActivity.this, RecipeSearchActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.item_3) {
+            Intent intent = new Intent(SongDetailsActivity.this, DictionaryApiActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.item_4) {
+            Intent intent = new Intent(SongDetailsActivity.this, SongSearchActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         songDetailsBinding = ActivitySongDetailsBinding.inflate(getLayoutInflater());
         setContentView(songDetailsBinding.getRoot());
+
+        Toolbar tool_bar = findViewById(R.id.toolbarDetails);
+        setSupportActionBar(tool_bar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         songDatabase = Room.databaseBuilder(getApplicationContext(),
                 SongDatabase.class, "song-database").build();
@@ -69,6 +112,16 @@ public class SongDetailsActivity extends AppCompatActivity {
                     insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
                 }
             });
+
+            songDetailsBinding.btnShowFavorites.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SongDetailsActivity.this, SongFavoritesActivity.class);
+                    startActivity(intent);
+                }
+            });
+
         }
     }
 

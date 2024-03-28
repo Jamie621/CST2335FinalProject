@@ -74,22 +74,7 @@ public class SongSearchActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.item_1) {
-//
-//        } else if (id == R.id.item_2) {
-//            Intent intent = new Intent(SongSearchActivity.this, RecipeSearchActivity.class);
-//            startActivity(intent);
-//        } else if (id == R.id.item_3) {
-//            Intent intent = new Intent(SongSearchActivity.this, DictionaryApiActivity.class);
-//            startActivity(intent);
-//        } else if (id == R.id.item_4) {
-//            Intent intent = new Intent(SongSearchActivity.this, SongSearchActivity.class);
-//            startActivity(intent);
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,8 +167,8 @@ public class SongSearchActivity extends AppCompatActivity {
         });
 
         songBinding.rvSongs.setLayoutManager(new LinearLayoutManager(this));
-        songAdapter = new SongAdapter(songsEntity,this);
-        songBinding.rvSongs.setAdapter(songAdapter);
+        songAdapter = new SongAdapter(songsEntity,this);//put arraylist into adapter
+        songBinding.rvSongs.setAdapter(songAdapter);//set adapter to recycler view
 
     }
 

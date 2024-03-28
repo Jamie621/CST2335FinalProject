@@ -7,4 +7,10 @@ import java.util.ArrayList;
 
 public class SongViewModel extends ViewModel {
     public MutableLiveData<ArrayList<Song>> songs = new MutableLiveData<>();
+
+    public MutableLiveData<ArrayList<Song>> getSongs() {
+        return songs;
+    }
 }
+
+

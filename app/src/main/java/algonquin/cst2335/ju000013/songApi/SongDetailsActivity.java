@@ -5,9 +5,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,12 +21,17 @@ import algonquin.cst2335.ju000013.databinding.ActivitySongDetailsBinding;
 public class SongDetailsActivity extends AppCompatActivity {
 
     private ActivitySongDetailsBinding songDetailsBinding;
-
+    private SongDatabase songDatabase;
+    private SongDAO songDAO;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         songDetailsBinding = ActivitySongDetailsBinding.inflate(getLayoutInflater());
         setContentView(songDetailsBinding.getRoot());
+
+        songDatabase = Room.databaseBuilder(getApplicationContext(),
+                SongDatabase.class, "song-database").build();
+        songDAO = songDatabase.sDAO();
 
         // Get the extras passed from the previous activity
         Bundle extras = getIntent().getExtras();
@@ -55,9 +62,20 @@ public class SongDetailsActivity extends AppCompatActivity {
                 }
             }).start();
 
-            // Load album cover image (if available)
-            // You can use your preferred method to load images from URLs here
-            // For example, using Picasso, Glide, etc.
+            songDetailsBinding.btnAddFavorite.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
+                }
+            });
         }
+    }
+
+    private void insertSongIntoDatabase(String title, int duration, String albumName, String albumCoverUrl){
+        Song song = new Song(title, duration ,albumName, albumCoverUrl);
+        new Thread(()->{
+            songDAO.insertSong(song);
+        }).start();
     }
 }

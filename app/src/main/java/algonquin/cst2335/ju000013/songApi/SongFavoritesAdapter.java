@@ -1,8 +1,10 @@
 package algonquin.cst2335.ju000013.songApi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +64,23 @@ public class SongFavoritesAdapter extends RecyclerView.Adapter<SongFavoritesAdap
                 Log.e(null, "Error downloading image: " + e.getMessage());
             }
         }).start();
+
+        songViewHolder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, SongDetailsActivity.class);
+            intent.putExtra("SONG_TITLE", songsEntity.get(position).getTitle());
+            intent.putExtra("SONG_DURATION", songsEntity.get(position).getDuration());
+            intent.putExtra("SONG_ALBUM_NAME", songsEntity.get(position).getAlbumName());
+            intent.putExtra("SONG_ALBUM_COVER_URL", songsEntity.get(position).getAlbumCoverUrl());
+            Bundle extras = new Bundle();
+            extras.putString("SOURCE", "FAVORITES");
+            Intent prevIntent = ((SongFavoritesActivity) context).getIntent();
+            Bundle prevExtras = prevIntent.getExtras();
+            if (prevExtras != null) {
+                extras.putAll(prevExtras);
+            }
+            intent.putExtras(extras);
+            context.startActivity(intent);
+        });
     }
 
     @Override

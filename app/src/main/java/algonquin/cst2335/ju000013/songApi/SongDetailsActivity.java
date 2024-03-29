@@ -77,51 +77,146 @@ public class SongDetailsActivity extends AppCompatActivity {
         songDAO = songDatabase.sDAO();
 
         // Get the extras passed from the previous activity
+
+//        Bundle extras = getIntent().getExtras();
+//
+//        if (extras != null) {
+//            String title = extras.getString("title");
+//            int duration = extras.getInt("duration");
+//            String albumName = extras.getString("albumName");
+//            String albumCoverUrl = extras.getString("albumCoverUrl");
+//
+//            // Set the details in the views
+//            songDetailsBinding.tvSongTitleDetail.setText(title);
+//            songDetailsBinding.tvSongDurationDetail.setText(String.valueOf(duration));
+//            songDetailsBinding.tvSongAlbumNameDetail.setText(albumName);
+//
+//            new Thread(() -> {
+//                try {
+//                    URL detailUrl = new URL(albumCoverUrl);
+//                    HttpURLConnection connection = (HttpURLConnection) detailUrl.openConnection();
+//                    connection.setDoInput(true);
+//                    connection.connect();
+//                    InputStream inputStream = connection.getInputStream();
+//                    final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//
+//                    // Update ImageView on the main UI thread
+//                    runOnUiThread(() -> songDetailsBinding.ivSongAlbumCoverDetail.setImageBitmap(bitmap));
+//                } catch (IOException e) {
+//                    Log.e(null, "Error downloading image: " + e.getMessage());
+//                }
+//            }).start();
+//
+//
+//
+//            songDetailsBinding.btnAddFavorite.setOnClickListener(new View.OnClickListener(){
+//
+//                @Override
+//                public void onClick(View v) {
+//                    insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
+//                }
+//            });
+//
+//            songDetailsBinding.btnShowFavorites.setOnClickListener(new View.OnClickListener(){
+//
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(SongDetailsActivity.this, SongFavoritesActivity.class);
+//                    startActivity(intent);
+//                }
+//            });
+//
+//        }
         Bundle extras = getIntent().getExtras();
+
         if (extras != null) {
-            String title = extras.getString("title");
-            int duration = extras.getInt("duration");
-            String albumName = extras.getString("albumName");
-            String albumCoverUrl = extras.getString("albumCoverUrl");
+            // Check the source of the extras
+            String source = extras.getString("SOURCE");
+            if ("FAVORITES".equals(source)) {
+                // Extras are from SongFavoritesActivity
+                String title = extras.getString("SONG_TITLE");
+                int duration = extras.getInt("SONG_DURATION");
+                String albumName = extras.getString("SONG_ALBUM_NAME");
+                String albumCoverUrl = extras.getString("SONG_ALBUM_COVER_URL");
 
-            // Set the details in the views
-            songDetailsBinding.tvSongTitleDetail.setText(title);
-            songDetailsBinding.tvSongDurationDetail.setText(String.valueOf(duration));
-            songDetailsBinding.tvSongAlbumNameDetail.setText(albumName);
+                // Set the details in the views
+                songDetailsBinding.tvSongTitleDetail.setText(title);
+                songDetailsBinding.tvSongDurationDetail.setText(String.valueOf(duration));
+                songDetailsBinding.tvSongAlbumNameDetail.setText(albumName);
 
-            new Thread(() -> {
-                try {
-                    URL detailUrl = new URL(albumCoverUrl);
-                    HttpURLConnection connection = (HttpURLConnection) detailUrl.openConnection();
-                    connection.setDoInput(true);
-                    connection.connect();
-                    InputStream inputStream = connection.getInputStream();
-                    final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                new Thread(() -> {
+                    try {
+                        URL detailUrl = new URL(albumCoverUrl);
+                        HttpURLConnection connection = (HttpURLConnection) detailUrl.openConnection();
+                        connection.setDoInput(true);
+                        connection.connect();
+                        InputStream inputStream = connection.getInputStream();
+                        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-                    // Update ImageView on the main UI thread
-                    runOnUiThread(() -> songDetailsBinding.ivSongAlbumCoverDetail.setImageBitmap(bitmap));
-                } catch (IOException e) {
-                    Log.e(null, "Error downloading image: " + e.getMessage());
-                }
-            }).start();
+                        // Update ImageView on the main UI thread
+                        runOnUiThread(() -> songDetailsBinding.ivSongAlbumCoverDetail.setImageBitmap(bitmap));
+                    } catch (IOException e) {
+                        Log.e(null, "Error downloading image: " + e.getMessage());
+                    }
+                }).start();
 
-            songDetailsBinding.btnAddFavorite.setOnClickListener(new View.OnClickListener(){
+                songDetailsBinding.btnAddFavorite.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
+                    }
+                });
 
-                @Override
-                public void onClick(View v) {
-                    insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
-                }
-            });
+                songDetailsBinding.btnShowFavorites.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(SongDetailsActivity.this, SongFavoritesActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            } else {
+                // Extras are from SongSearchActivity
+                String title = extras.getString("title");
+                int duration = extras.getInt("duration");
+                String albumName = extras.getString("albumName");
+                String albumCoverUrl = extras.getString("albumCoverUrl");
 
-            songDetailsBinding.btnShowFavorites.setOnClickListener(new View.OnClickListener(){
+                // Set the details in the views
+                songDetailsBinding.tvSongTitleDetail.setText(title);
+                songDetailsBinding.tvSongDurationDetail.setText(String.valueOf(duration));
+                songDetailsBinding.tvSongAlbumNameDetail.setText(albumName);
 
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(SongDetailsActivity.this, SongFavoritesActivity.class);
-                    startActivity(intent);
-                }
-            });
+                new Thread(() -> {
+                    try {
+                        URL detailUrl = new URL(albumCoverUrl);
+                        HttpURLConnection connection = (HttpURLConnection) detailUrl.openConnection();
+                        connection.setDoInput(true);
+                        connection.connect();
+                        InputStream inputStream = connection.getInputStream();
+                        final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
+                        // Update ImageView on the main UI thread
+                        runOnUiThread(() -> songDetailsBinding.ivSongAlbumCoverDetail.setImageBitmap(bitmap));
+                    } catch (IOException e) {
+                        Log.e(null, "Error downloading image: " + e.getMessage());
+                    }
+                }).start();
+
+                songDetailsBinding.btnAddFavorite.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
+                    }
+                });
+
+                songDetailsBinding.btnShowFavorites.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(SongDetailsActivity.this, SongFavoritesActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
         }
     }
 

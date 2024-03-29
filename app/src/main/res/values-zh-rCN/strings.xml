@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">CST2335FinalProject</string>
     <string name="recipe_search">菜谱查找</string>
-    <string name="recipe_error_msg">请输入有效食物名称</string>
+    <string name="recipe_validate_error_msg">输入文本验证不成功</string>
     <string name="recipe_save_alert">您想保存吗？</string>
     <string name="recipe_no">不是</string>
     <string name="recipe_yes">是</string>
@@ -27,4 +27,7 @@
     <string name="recipe_search_content">查找文本</string>
     <string name="error_encoding_recipe_name">错误名称</string>
     <string name="recipe_title">名称</string>
+    <string name="enterRecipeSearchText">请输入</string>
+    <string name="recipe_search_text_contain_special_character">输入文本含有特殊符号</string>
+    <string name="recipe_validate_correct_msg">输入文本验证成功</string>
 </resources>

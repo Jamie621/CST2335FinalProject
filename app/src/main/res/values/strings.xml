@@ -16,7 +16,8 @@
     <string name="deezer_song_search_api" translatable="false">Deezer song search api</string>
 
     <string name="Lookup" translatable="false">Lookup</string>
-    <string name="recipe_error_msg">Please enter the name of a valid food</string>
+    <string name="recipe_validate_error_msg">Your enter text is not validate</string>
+    <string name="recipe_validate_correct_msg">Your enter text is validate</string>
     <string name="recipe_save_alert">Do you want to save as favorite?</string>
     <string name="recipe_no">NO</string>
     <string name="recipe_yes">YES</string>
@@ -44,5 +45,7 @@
     <string name="error_encoding_recipe_name">Error encoding recipe name</string>
     <string name="recipe_id" translatable="false">ID</string>
     <string name="recipe_title">Title</string>
+    <string name="enterRecipeSearchText">Please enter</string>
+    <string name="recipe_search_text_contain_special_character">Search text contain special character</string>
 
 </resources>

@@ -48,17 +48,19 @@ import java.util.concurrent.Executors;
 import algonquin.cst2335.ju000013.R;
 import algonquin.cst2335.ju000013.databinding.ActivityRecipeSearchBinding;
 import algonquin.cst2335.ju000013.databinding.SearchResultBinding;
-/** This page is a search page for recipe from https://spoonacular.com
+
+/**
+ * This page is a search page for recipe from https://spoonacular.com
  * After search, user can see lists of related recipes and add favorite recipe to local database.
  * User can view saved recipe as needed.
  *
  * @author Fei Wu
  * @version 1.0
- * */
+ */
 public class RecipeSearchActivity extends AppCompatActivity {
 
     ActivityRecipeSearchBinding binding;
-    private  RecyclerView.Adapter searchAdapter;
+    private RecyclerView.Adapter searchAdapter;
     RecipeSearchedViewModel searchModel;
     private ArrayList<RecipeSearched> searchedRecipes;
     private RecipeSearchedDAO sDAO;
@@ -66,6 +68,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
     Button buttonSearch;
     RecyclerView searchResultsRecycle;
     Button savedViewButton;
+    TextView validateRecipeSearchText;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     String searchText;
@@ -81,9 +84,8 @@ public class RecipeSearchActivity extends AppCompatActivity {
      * Called when the activity is starting.
      *
      * @param savedInstanceState If the activity is being re-initialized after
-     *     previously being shut down then this Bundle contains the data it most
-     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
-     *
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
         buttonSearch = binding.buttonSearchRecipe;
         searchResultsRecycle = binding.searchRecipeRecycler;
         savedViewButton = binding.viewSavedRecipeButton;
+        validateRecipeSearchText = binding.validateRecipeSearchText;
 
         /* save search text to SharedPreference to show automatically next time. */
         prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
@@ -112,7 +115,7 @@ public class RecipeSearchActivity extends AppCompatActivity {
         /* initialize the ArrayList<> that it is storing */
         searchModel = new ViewModelProvider(this).get(RecipeSearchedViewModel.class);
         searchedRecipes = searchModel.searchedRecipes.getValue();
-        if (searchedRecipes == null){
+        if (searchedRecipes == null) {
             searchModel.searchedRecipes.postValue(searchedRecipes = new ArrayList<>());
         }
 
@@ -153,7 +156,8 @@ public class RecipeSearchActivity extends AppCompatActivity {
         buttonSearch.setOnClickListener(click -> {
             searchText = editSearchText.getText().toString();
             try {
-                if(!searchText.isEmpty()){
+                if (validateRecipeSearch(searchText)) {
+                    validateRecipeSearchText.setText(R.string.recipe_validate_correct_msg);
                     // Clear the previous search results from arrayList
                     searchedRecipes.clear();
                     searchAdapter.notifyDataSetChanged();// Notify the adapter that the data set has changed
@@ -174,18 +178,18 @@ public class RecipeSearchActivity extends AppCompatActivity {
                                         /* add to search result arraylist*/
                                         searchedRecipes.add(new RecipeSearched(title, image, id, sourceUrl));
 
-                                    }searchAdapter.notifyItemInserted(searchedRecipes.size()-1);
+                                    }
+                                    searchAdapter.notifyItemInserted(searchedRecipes.size() - 1);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }),
                             (error -> {
                                 Log.e(TAG, "Error:" + error.getMessage());
-                                Snackbar.make(click, R.string.recipe_error_msg, Toast.LENGTH_SHORT).show();
                             }));
                     queue.add(request);
                 } else {
-                    Snackbar.make(click, R.string.recipe_error_msg, Toast.LENGTH_SHORT).show();
+                    validateRecipeSearchText.setText(R.string.recipe_validate_error_msg);
                 }
             } catch (Exception e) {
                 Log.e(TAG, getString(R.string.error_encoding_recipe_name));
@@ -200,10 +204,51 @@ public class RecipeSearchActivity extends AppCompatActivity {
         editSearchText.setText(searchText);
 
         /* view saved favorite recipes button. jump to the next page. */
-        Intent savedRecipePage = new Intent( RecipeSearchActivity.this, SavedRecipeActivity.class);
+        Intent savedRecipePage = new Intent(RecipeSearchActivity.this, SavedRecipeActivity.class);
         savedViewButton.setOnClickListener(click -> {
             startActivity(savedRecipePage);
         });
+    }
+
+    /**
+     * This function check if this string has a special symbol.
+     * If has a special symbol, then show a Toast message saying not validate.
+     *
+     * @param searchText The String object that we are checking.
+     * @return Return true if the string not contain special symbol, and false if it is has.
+     */
+    private boolean validateRecipeSearch(String searchText) {
+        for (int i = 0; i < searchText.length(); i++) {
+            char c = searchText.charAt(i);
+            if (containSpecialCharacter(c)) {
+                Toast.makeText(this, R.string.recipe_search_text_contain_special_character, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * This function check if there is a special character.
+     *
+     * @param c The character that we are checking.
+     * @return Return true if there is a special character, and false if not.
+     */
+    private boolean containSpecialCharacter(char c) {
+        switch (c) {
+            case '#':
+            case '@':
+            case '?':
+            case '!':
+            case '*':
+            case '&':
+            case '^':
+            case '%':
+            case '$':
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**
@@ -275,17 +320,18 @@ public class RecipeSearchActivity extends AppCompatActivity {
         /**
          * Shows an AlertDialog for saving a recipe.
          *
-         * @param title The title of the recipe.
-         * @param sourceUrl The source URL of the recipe.
-         * @param drawable The Drawable image of the recipe.
+         * @param title        The title of the recipe.
+         * @param sourceUrl    The source URL of the recipe.
+         * @param drawable     The Drawable image of the recipe.
          * @param recipeDetail The RecipeSearched object representing the recipe details.
          */
         private void showSaveAlertDialog(String title, String sourceUrl, Drawable drawable, RecipeSearched recipeDetail) {
             AlertDialog.Builder builder = new AlertDialog.Builder(RecipeSearchActivity.this);
             builder.setTitle(getString(R.string.recipe_save_alert))
                     .setIcon(drawable)
-                    .setMessage(title + "\n" +"\n" + sourceUrl)
-                    .setNegativeButton(getString(R.string.recipe_no), (dialog, cl) -> {})
+                    .setMessage(title + "\n" + "\n" + sourceUrl)
+                    .setNegativeButton(getString(R.string.recipe_no), (dialog, cl) -> {
+                    })
                     .setPositiveButton(getString(R.string.recipe_yes), (dialog, cl) -> {
                         Executors.newSingleThreadExecutor().execute(() -> {
                             sDAO.insertRecipe(recipeDetail); // insert into database

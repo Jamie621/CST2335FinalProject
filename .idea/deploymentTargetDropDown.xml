@@ -2,6 +2,9 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="RecipeSearchActivityTest">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -17,6 +20,31 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-03-25T22:04:11.963928700Z" />
         </State>
+      </entry>
+      <entry key="testEmptySearchText()">
+        <State />
+      </entry>
+      <entry key="testSearchText()">
+        <State />
+      </entry>
+      <entry key="testSearchTextNotNull()">
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\fwu\.android\avd\Pixel_3a_API_27_1.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-03-29T15:12:36.993599100Z" />
+        </State>
+      </entry>
+      <entry key="testViewSavedRecipesButton()">
+        <State />
       </entry>
     </value>
   </component>

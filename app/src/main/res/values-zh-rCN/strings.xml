@@ -19,7 +19,7 @@
     <string name="removed_alert">已删除</string>
     <string name="recipe_delete_all">删除所有菜谱</string>
     <string name="recipe_help">软件指南</string>
-    <string name="recipe_help_content">点击将出现每个菜谱的图片，名称和网络地址。         选择“是”将从保存中删除；选择“不是”将取消删除         右上角的垃圾桶小图标可以清空全部保存。</string>
+    <string name="recipe_help_content">点击将出现每个菜谱的图片，名称和网络地址。         \n\n选择“是”将从保存中删除；选择“不是”将取消删除         \n\n右上角的垃圾桶小图标可以清空全部保存。</string>
     <string name="recipe_json_array_name">结果</string>
     <string name="recipe_json_title">名称</string>
     <string name="recipe_json_image">图片</string>

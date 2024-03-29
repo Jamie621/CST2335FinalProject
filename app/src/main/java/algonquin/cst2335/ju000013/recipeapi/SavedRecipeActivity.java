@@ -118,6 +118,7 @@ public class SavedRecipeActivity extends AppCompatActivity {
         /* set toolbar */
         Toolbar recipeToolbar = binding.recipeToolbar;
         setSupportActionBar(recipeToolbar);
+        recipeToolbar.setSubtitle(R.string.recipe_search);
 
         /* open a database */
         RecipeSavedDatabase db = Room.databaseBuilder(getApplicationContext(), RecipeSavedDatabase.class, "database-name").build();

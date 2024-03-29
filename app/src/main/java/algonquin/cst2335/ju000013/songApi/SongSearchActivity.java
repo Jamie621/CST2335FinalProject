@@ -98,6 +98,8 @@ public class SongSearchActivity extends AppCompatActivity {
 
             artistName = songBinding.etSong.getText().toString();
 
+
+
             // Construct the URL with the artist's name
             String url;
             try {
@@ -113,6 +115,7 @@ public class SongSearchActivity extends AppCompatActivity {
                             // Handle successful response
                             // Get the "data" array from the JSON response
                             JSONArray dataArray = response.getJSONArray("data");
+                            songsEntity.clear();
                             String tracklistUrl = null;
                             if (dataArray.length() > 0) {
                                 // Get the first object from the array

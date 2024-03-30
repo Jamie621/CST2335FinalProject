@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 
-import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
+//import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.item_1){
 
         } else if (id == R.id.item_2) {
-            Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
-            startActivity(intent);
+/*            Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
+            startActivity(intent);*/
         } else if (id == R.id.item_3) {
             Intent intent = new Intent(MainActivity.this, DictionaryApiActivity.class);
             startActivity(intent);
@@ -67,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
         // Set click listener for Recipe Search
-        buttonRecipeSearch.setOnClickListener(click ->{
+      /*  buttonRecipeSearch.setOnClickListener(click ->{
             Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
-        });
+        });*/
 
 
 //         Set click listener for Dictionary API

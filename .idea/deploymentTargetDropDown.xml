@@ -2,7 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="DictionaryApiActivityTest">
+      <entry key="DictionaryApiActivityTest2">
         <State />
       </entry>
       <entry key="app">
@@ -18,19 +18,19 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-25T01:01:58.912910500Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-03-29T04:17:30.885649100Z" />
         </State>
       </entry>
-      <entry key="testClearSearchResults()">
-        <State />
-      </entry>
-      <entry key="testInputFieldAcceptsText()">
+      <entry key="testDisplayOfSearchInputField()">
         <State />
       </entry>
       <entry key="testResultsVisibilityAfterSearch()">
         <State />
       </entry>
       <entry key="testSearchButtonFunctionality()">
+        <State />
+      </entry>
+      <entry key="testSearchButtonVisibility()">
         <State />
       </entry>
     </value>

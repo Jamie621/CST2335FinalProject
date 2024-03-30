@@ -25,11 +25,9 @@
             </intent-filter>
         </activity>
 
-        <!-- Uncomment and set exported as needed for other activities -->
-        <!-- <activity android:name=".SunriseSunsetLookupActivity" android:exported="true"/> -->
-        <!-- <activity android:name=".RecipeSearchActivity" android:exported="true"/> -->
+        <!-- Other activities -->
         <activity android:name=".DictionaryApiActivity" android:exported="false"/>
-        <!-- <activity android:name=".DeezerSongSearchApiActivity" android:exported="true"/> -->
+        <activity android:name=".SavedWordsActivity" android:exported="true"/> <!-- Add this line -->
 
     </application>
 

@@ -6,31 +6,27 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.List;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
 
-/*
+import java.util.List;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 @Dao
 public interface WordDao {
     @Insert
-    void insert(WordEntity word);
+    long insertWord(WordEntity word);
+
+/*    @Delete
+    void deleteWord(WordEntity word);*/
 
     @Query("SELECT * FROM words")
     List<WordEntity> getAllWords();
 
-    @Delete
-    void delete(WordEntity word);
-}
-*/
-
-@Dao
-public interface WordDao {
-    // Insert and Delete operations
-    @Insert
-    long insert(WordEntity word);
-
-    @Delete
-    void delete(WordEntity word);
-
-    // Make sure you have a method to get the word by ID if necessary
-    @Query("SELECT * FROM words WHERE id = :id")
-    WordEntity getWordById(int id);
+    @Query("DELETE FROM words WHERE id IN (:ids)")
+    void deleteWordsByIds(List<Long> ids);
 }

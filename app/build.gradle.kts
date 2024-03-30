@@ -25,7 +25,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
+      }
 }
 
 dependencies {
@@ -47,7 +47,7 @@ dependencies {
     androidTestImplementation ("androidx.test:core:1.4.0")
     androidTestImplementation ("androidx.test:rules:1.4.0")
     androidTestImplementation ("androidx.test.espresso:espresso-contrib:3.4.0")
-
+    androidTestImplementation ("org.mockito:mockito-android:3.3.3")
 
     // Room dependencies
 //    implementation("androidx.room:room-runtime:$room_version")

@@ -1,5 +1,10 @@
 package algonquin.cst2335.ju000013.songApi;
-
+/**
+ * Purpose: This file is the display of database items saved already
+ * Author: Wei Deng
+ * Lab section: 2335-011
+ * Date updated: 2024-03-30
+ */
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,15 +31,14 @@ import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
 
 public class SongFavoritesActivity extends AppCompatActivity {
     private ActivitySongFavoritesBinding songFavoritesBinding;
-
-    //ArrayList<Song> songsDatabaseEntity;
-    //Song songFavorite;
     private SongFavoritesViewModel songFavoritesViewModel;
     private SongFavoritesAdapter songFavoritesAdapter;
-
     private String helpTitle;
     private String instructions;
 
+    /**
+     * Inflates the menu resource for the activity's toolbar.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -42,33 +46,36 @@ public class SongFavoritesActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handles the action bar item clicks.
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home) { // Handle the Up button click
-            onBackPressed(); // Go back to the previous activity
+        if (id == android.R.id.home) {
+            onBackPressed();
             return true;
         }
-        else if (id == R.id.item_1) {
-
-        }
-        else if (id == R.id.item_2) {
+        else if (id == R.id.button2) {
             Intent intent = new Intent(SongFavoritesActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
-        } else if (id == R.id.item_3) {
+        } else if (id == R.id.button3) {
             Intent intent = new Intent(SongFavoritesActivity.this, DictionaryApiActivity.class);
             startActivity(intent);
-        } else if (id == R.id.item_4) {
+        } else if (id == R.id.button4) {
             Intent intent = new Intent(SongFavoritesActivity.this, SongSearchActivity.class);
             startActivity(intent);
         }
         else if (id == R.id.item_help) {
-            showHelpDialog(); // Show help dialog when help menu item is clicked
+            showHelpDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Displays a dialog with help information.
+     */
     private void showHelpDialog() {
         helpTitle = getString(R.string.help_title);
         instructions = getString(R.string.instructions);
@@ -78,13 +85,16 @@ public class SongFavoritesActivity extends AppCompatActivity {
         builder.setMessage(instructions);
         builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // Handle OK button click
-                dialog.dismiss(); // Dismiss the dialog
+                dialog.dismiss();
             }
         });
         builder.show();
     }
 
+    /**
+     * Initializes the activity, sets up the toolbar, and observes changes in the ViewModel.
+     */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         songFavoritesBinding = ActivitySongFavoritesBinding.inflate(getLayoutInflater());
@@ -101,13 +111,10 @@ public class SongFavoritesActivity extends AppCompatActivity {
 
         songFavoritesViewModel = new ViewModelProvider(this).get(SongFavoritesViewModel.class);
         songFavoritesViewModel.getSongs().observe(this, new Observer<List<Song>>() {
-
             @Override
             public void onChanged(List<Song> songs) {
-                // Update the adapter with the new list of songs
                 songFavoritesAdapter.setSongs(songs);
             }
         });
     }
-
 }

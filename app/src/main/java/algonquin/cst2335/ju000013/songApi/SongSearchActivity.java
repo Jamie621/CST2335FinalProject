@@ -1,5 +1,10 @@
 package algonquin.cst2335.ju000013.songApi;
-
+/**
+ * Purpose: This file is to search for songs from album of artist and display with the first recycler view.
+ * Author: Wei Deng
+ * Lab section: 2335-011
+ * Date updated: 2024-03-30
+ */
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -11,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import androidx.appcompat.widget.Toolbar;
@@ -39,6 +45,9 @@ import algonquin.cst2335.ju000013.databinding.ActivitySongSearchBinding;
 import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
 
 public class SongSearchActivity extends AppCompatActivity {
+    /**
+     * private attributes
+     */
     ActivitySongSearchBinding songBinding;
     ArrayList<Song> songsEntity;
     Song song;
@@ -57,6 +66,12 @@ public class SongSearchActivity extends AppCompatActivity {
     private String helpTitle;
     private String instructions;
 
+    /**
+     * To create menu option by inflating
+     * @param menu The options menu in which you place your items.
+     *
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -64,6 +79,12 @@ public class SongSearchActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * to select menu options by id
+     * @param item The menu item that was selected.
+     *
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -71,16 +92,16 @@ public class SongSearchActivity extends AppCompatActivity {
             onBackPressed(); // Go back to the previous activity
             return true;
         }
-        else if (id == R.id.item_1) {
+        else if (id == R.id.button1) {
 
         }
-        else if (id == R.id.item_2) {
+        else if (id == R.id.button2) {
             Intent intent = new Intent(SongSearchActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
-        } else if (id == R.id.item_3) {
+        } else if (id == R.id.button3) {
             Intent intent = new Intent(SongSearchActivity.this, DictionaryApiActivity.class);
             startActivity(intent);
-        } else if (id == R.id.item_4) {
+        } else if (id == R.id.button4) {
             Intent intent = new Intent(SongSearchActivity.this, SongSearchActivity.class);
             startActivity(intent);
         }
@@ -91,6 +112,9 @@ public class SongSearchActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * to show help dialog when clicked
+     */
     private void showHelpDialog() {
         helpTitle = getString(R.string.help_title);
         instructions = getString(R.string.instructions);
@@ -107,44 +131,72 @@ public class SongSearchActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * methods to apply when instance is loaded.
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         songBinding = ActivitySongSearchBinding.inflate(getLayoutInflater());
         setContentView(songBinding.getRoot());
-
+/**
+ * to use the toolbar
+ */
         Toolbar tool_bar = findViewById(R.id.toolbar);
         setSupportActionBar(tool_bar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Enable Up button in the toolbar
-
+/**
+ * get entity from model
+ */
         songViewModel = new ViewModelProvider(this).get(SongViewModel.class);
         songsEntity = songViewModel.songs.getValue();
-
+/**
+ * check if entity is null
+ */
         if (songsEntity == null) {
             songViewModel.songs.postValue(songsEntity = new ArrayList<>());
         }
-
+/**
+ * prepare to get info from volley
+ */
         queue = Volley.newRequestQueue(this);
-
+/**
+ * initiate shared preference
+ */
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        //get from shared preference
+        /**
+         * get value from shared preference
+         */
         artistName = prefs.getString(ARTIST_NAME_KEY, "");
         songBinding.etSong.setText(artistName);
-
+/**
+ * onclick listener for search
+ */
         songBinding.btnSongSearch.setOnClickListener(click -> {
             artistName = songBinding.etSong.getText().toString();
 
             if (!isValidArtistName(artistName)) {
-                // Show error message and return
-                showSnackbar(getString(R.string.enterLettersOnly));
+                // Show error message in the validation TextView
+                songBinding.tvValidation.setText(getString(R.string.enterLettersOnly));
                 return;
+            } else {
+                // Clear the validation message if artist name is valid
+                songBinding.tvValidation.setText(getString(R.string.validationPassed));
             }
-
+/**
+ * store into shared ref
+ */
             //save in shared preference
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(ARTIST_NAME_KEY, artistName);
             editor.apply();
-            // Construct the URL with the artist's name
+            /**
+             * Construct the URL with the artist's name
+             */
             String url;
             try {
                 url = URL_REQUEST_DATA + URLEncoder.encode(artistName, "UTF-8");
@@ -156,22 +208,30 @@ public class SongSearchActivity extends AppCompatActivity {
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                     (response) -> {
                         try {
-                            // Handle successful response
-                            // Get the "data" array from the JSON response
+                            /**
+                             * Handle successful response
+                             * Get the "data" array from the JSON response
+                              */
                             JSONArray dataArray = response.getJSONArray("data");
                             songsEntity.clear();
                             String tracklistUrl = null;
                             if (dataArray.length() > 0) {
-                                // Get the first object from the array
+                                /**
+                                 *  Get the first object from the array
+                                 */
                                 JSONObject firstObject = dataArray.getJSONObject(0);
-                                // Get the tracklist URL from the first object
+                                /**
+                                 * Get the tracklist URL from the first object
+                                 */
                                 tracklistUrl = firstObject.getString("tracklist");
 
                                 JsonObjectRequest tracklistRequest = new JsonObjectRequest(Request.Method.GET, tracklistUrl, null,
                                         (tracklistResponse) -> {
                                             try {
-                                                // Handle successful response for tracklist
-                                                // Get the "data" array from the JSON response
+                                                /**
+                                                 * Handle successful response for tracklist
+                                                 * Get the "data" array from the JSON response
+                                                 */
                                                 JSONArray dataArray2 = tracklistResponse.getJSONArray("data");
 
                                                 for (int i = 0; i < dataArray2.length(); i++) {
@@ -183,7 +243,9 @@ public class SongSearchActivity extends AppCompatActivity {
                                                     String albumName = albumObject.getString("title");
                                                     String albumCoverUrl = albumObject.getString("cover");
 
-                                                    // Create a new Song instance and add it to the list
+                                                    /**
+                                                     *  Create a new Song instance and add it to the list
+                                                     */
                                                     song = new Song(songTitle, duration, albumName, albumCoverUrl);
                                                     songsEntity.add(song);
                                                 }
@@ -194,12 +256,16 @@ public class SongSearchActivity extends AppCompatActivity {
                                             }
                                         },
                                         (tracklistError) -> {
-                                            // Handle error response for tracklist
+                                            /**
+                                             * Handle error response for tracklist
+                                              */
                                             Log.e(TAG, "Error fetching tracklist: " + tracklistError.getMessage());
                                         });
                                 queue.add(tracklistRequest);
                             } else {
-                                // No artist found with the given name
+                                /**
+                                 * No artist found with the given name
+                                 */
                                 showSnackbar("No tracklist found for the artist: " + artistName);
                             }
                         } catch (JSONException e) {
@@ -207,7 +273,9 @@ public class SongSearchActivity extends AppCompatActivity {
                         }
                     },
                     (error) -> {
-                        // Handle error response
+                        /**
+                         * Handle error response
+                         */
                         Log.e(TAG, "Error fetching artist data: " + error.getMessage());
                     });
             queue.add(request);
@@ -217,7 +285,11 @@ public class SongSearchActivity extends AppCompatActivity {
         songAdapter = new SongAdapter(songsEntity,this);//put arraylist into adapter
         songBinding.rvSongs.setAdapter(songAdapter);//set adapter to recycler view
     }
-    // Inside the SongSearchActivity class
+
+    /**
+     * Inside the SongSearchActivity class
+     * @param message
+     */
     private void showSnackbar(String message) {
         Snackbar.make(songBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
     }

@@ -29,15 +29,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.item_1){
+        if (id == R.id.button1){
 
-        } else if (id == R.id.item_2) {
+        } else if (id == R.id.button1) {
             Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
-        } else if (id == R.id.item_3) {
+        } else if (id == R.id.button3) {
             Intent intent = new Intent(MainActivity.this, DictionaryApiActivity.class);
             startActivity(intent);
-        } else if (id == R.id.item_4) {
+        } else if (id == R.id.button4) {
             Intent intent = new Intent(MainActivity.this, SongSearchActivity.class);
             startActivity(intent);
         }

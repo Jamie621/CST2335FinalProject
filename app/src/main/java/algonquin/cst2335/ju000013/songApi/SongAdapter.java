@@ -1,5 +1,10 @@
 package algonquin.cst2335.ju000013.songApi;
-
+/**
+ * Purpose: This file is the adapter working between search and the first recycler view
+ * Author: Wei Deng
+ * Lab section: 2335-011
+ * Date updated: 2024-03-30
+ */
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,14 +28,29 @@ import java.util.List;
 import algonquin.cst2335.ju000013.R;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
+    /**
+     * private attributes
+     */
     private final List<Song> songsEntity;
     private final Context context;
 
+    /**
+     * get the entity and context
+     * @param songsEntity
+     * @param context
+     */
     public SongAdapter(List<Song> songsEntity, Context context) {
         this.songsEntity = songsEntity;
         this.context = context;
     }
 
+    /**
+     * create view holder
+     * @param parent   The ViewGroup into which the new View will be added after it is bound to
+     *                 an adapter position.
+     * @param viewType The view type of the new View.
+     * @return
+     */
     @NonNull
     @Override
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -38,6 +58,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         return new SongViewHolder(view);
     }
 
+    /**
+     * bind view holder
+     * @param songViewHolder   The ViewHolder which should be updated to represent the contents of the
+     *                 item at the given position in the data set.
+     * @param position The position of the item within the adapter's data set.
+     */
     @Override
     public void onBindViewHolder(@NonNull SongAdapter.SongViewHolder songViewHolder, int position) {
         songViewHolder.songName.setText(songsEntity.get(position).getTitle());
@@ -60,11 +86,18 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         }).start();
     }
 
+    /**
+     * get item count
+     * @return
+     */
     @Override
     public int getItemCount() {
         return songsEntity == null ? 0: songsEntity.size();
     }
 
+    /**
+     * inner class for view holder
+     */
     public class SongViewHolder extends RecyclerView.ViewHolder{
         private final TextView songName;
         private final TextView songDuration;

@@ -1,5 +1,10 @@
 package algonquin.cst2335.ju000013.songApi;
-
+/**
+ * Purpose: This file is the view model for the second recycler view
+ * Author: Wei Deng
+ * Lab section: 2335-011
+ * Date updated: 2024-03-30
+ */
 import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,6 +20,11 @@ public class SongFavoritesViewModel extends AndroidViewModel {
     private final MutableLiveData<List<Song>> songs;
     private final SongDAO songDAO;
 
+    /**
+     * Constructor for the SongFavoritesViewModel.
+     *
+     * @param application The application context.
+     */
     public SongFavoritesViewModel(@NonNull Application application) {
         super(application);
         SongDatabase db = SongDatabase.getDatabase(application);
@@ -23,10 +33,18 @@ public class SongFavoritesViewModel extends AndroidViewModel {
         loadSongs();
     }
 
+    /**
+     * Retrieves the LiveData object containing the list of favorite songs.
+     *
+     * @return LiveData object containing the list of favorite songs.
+     */
     public LiveData<List<Song>> getSongs() {
         return songs;
     }
 
+    /**
+     * Loads the list of favorite songs from the database.
+     */
     private void loadSongs() {
         // Run on a background thread
         new Thread(() -> {

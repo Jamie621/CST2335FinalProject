@@ -27,5 +27,9 @@
     <string name="songAlreadyExist">歌曲已在收藏中</string>
     <string name="songDeleted">歌曲取消收藏</string>
     <string name="enterLettersOnly">请输入字母</string>
+    <string name="validationPassed">验证通过</string>
+    <string name="validation">验证</string>
+
+
 
 </resources>

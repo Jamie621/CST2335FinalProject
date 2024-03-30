@@ -1,5 +1,10 @@
 package algonquin.cst2335.ju000013.songApi;
-
+/**
+ * Purpose: This file works between the database and second recycler view.
+ * Author: Wei Deng
+ * Lab section: 2335-011
+ * Date updated: 2024-03-30
+ */
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,11 +31,22 @@ public class SongFavoritesAdapter extends RecyclerView.Adapter<SongFavoritesAdap
     private List<Song> songsEntity;
     private final Context context;
 
+    /**
+     * Constructor for the SongFavoritesAdapter.
+     *
+     * @param songsEntity The list of favorite songs.
+     * @param context     The context of the activity.
+     */
     public SongFavoritesAdapter(List<Song> songsEntity, Context context) {
         this.songsEntity = songsEntity;
         this.context = context;
     }
 
+    /**
+     * Sets the list of favorite songs.
+     *
+     * @param songs The list of favorite songs.
+     */
     public void setSongs(List<Song> songs) {
         this.songsEntity = songs;
         notifyDataSetChanged(); // Notify the adapter that the data has changed
@@ -87,6 +103,9 @@ public class SongFavoritesAdapter extends RecyclerView.Adapter<SongFavoritesAdap
         return songsEntity == null ? 0 : songsEntity.size();
     }
 
+    /**
+     * ViewHolder class to hold the views for a single item in the RecyclerView.
+     */
     public static class SongFavoritesViewHolder extends RecyclerView.ViewHolder {
         private final TextView songName;
         private final TextView songDuration;

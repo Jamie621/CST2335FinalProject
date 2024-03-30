@@ -26,5 +26,7 @@
     <string name="songAlreadyExist">Song already in favorites</string>
     <string name="songDeleted">Song deleted from favorites</string>
     <string name="enterLettersOnly">Please enter letters only</string>
+    <string name="validationPassed">Validation passed</string>
+    <string name="validation">Validation</string>
 
 </resources>

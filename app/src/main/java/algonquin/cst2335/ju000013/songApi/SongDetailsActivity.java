@@ -1,5 +1,10 @@
 package algonquin.cst2335.ju000013.songApi;
-
+/**
+ * Purpose: This file is to display songs details and add, delete or display database items
+ * Author: Wei Deng
+ * Lab section: 2335-011
+ * Date updated: 2024-03-30
+ */
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.room.Room;
+import androidx.room.Update;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -30,7 +36,9 @@ import algonquin.cst2335.ju000013.databinding.ActivitySongDetailsBinding;
 import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
 
 public class SongDetailsActivity extends AppCompatActivity {
-
+    /**
+     * private attributes to be used.
+     */
     private ActivitySongDetailsBinding songDetailsBinding;
     private SongDatabase songDatabase;
     private SongDAO songDAO;
@@ -38,6 +46,12 @@ public class SongDetailsActivity extends AppCompatActivity {
     private String helpTitle;
     private String instructions;
 
+    /**
+     * To create the option menu
+     * @param menu The options menu in which you place your items.
+     *
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -45,6 +59,12 @@ public class SongDetailsActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * To select the options on the menu
+     * @param item The menu item that was selected.
+     *
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -52,16 +72,16 @@ public class SongDetailsActivity extends AppCompatActivity {
             onBackPressed(); // Go back to the previous activity
             return true;
         }
-        else if (id == R.id.item_1) {
+        else if (id == R.id.button1) {
 
         }
-        else if (id == R.id.item_2) {
+        else if (id == R.id.button2) {
             Intent intent = new Intent(SongDetailsActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
-        } else if (id == R.id.item_3) {
+        } else if (id == R.id.button3) {
             Intent intent = new Intent(SongDetailsActivity.this, DictionaryApiActivity.class);
             startActivity(intent);
-        } else if (id == R.id.item_4) {
+        } else if (id == R.id.button4) {
             Intent intent = new Intent(SongDetailsActivity.this, SongSearchActivity.class);
             startActivity(intent);
         }
@@ -72,6 +92,9 @@ public class SongDetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * To show the help dialog
+     */
     private void showHelpDialog() {
         helpTitle = getString(R.string.help_title);
         instructions = getString(R.string.instructions);
@@ -88,6 +111,13 @@ public class SongDetailsActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * All method when you creates
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,16 +135,22 @@ public class SongDetailsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            // Check the source of the extras
+            /**
+             * Check the source of the extras
+             */
+
             String source = extras.getString("SOURCE");
             if ("FAVORITES".equals(source)) {
-                // Extras are from SongFavoritesActivity
+                /**
+                 * Extras are from SongFavoritesActivity
+                 */
                 String title = extras.getString("SONG_TITLE");
                 int duration = extras.getInt("SONG_DURATION");
                 String albumName = extras.getString("SONG_ALBUM_NAME");
                 String albumCoverUrl = extras.getString("SONG_ALBUM_COVER_URL");
-
-                // Set the details in the views
+                /**
+                 * Set the details in the views
+                 */
                 songDetailsBinding.tvSongTitleDetail.setText(title);
                 songDetailsBinding.tvSongDurationDetail.setText(String.valueOf(duration));
                 songDetailsBinding.tvSongAlbumNameDetail.setText(albumName);
@@ -128,7 +164,10 @@ public class SongDetailsActivity extends AppCompatActivity {
                         InputStream inputStream = connection.getInputStream();
                         final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-                        // Update ImageView on the main UI thread
+                        /**
+                         * Update ImageView on the main UI thread
+                          */
+
                         runOnUiThread(() -> songDetailsBinding.ivSongAlbumCoverDetail.setImageBitmap(bitmap));
                     } catch (IOException e) {
                         Log.e(null, "Error downloading image: " + e.getMessage());
@@ -141,17 +180,25 @@ public class SongDetailsActivity extends AppCompatActivity {
                         new Thread(() -> {
                             Song existingSong = songDAO.getSongByTitle(title);
                             if (existingSong == null) {
-                                // Song does not exist, insert it into the database
+                                /**
+                                 * Song does not exist, insert it into the database
+                                 */
                                 insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
                                 runOnUiThread(() -> {
-                                    // Show a message indicating that the song was added to favorites
+                                    /**
+                                     * Show a message indicating that the song was added to favorites
+                                      */
                                     String message = getString(R.string.songAdded) + " " + title;
                                     showSnackbar(message);
                                 });
                             } else {
-                                // Song already exists in the database
+                                /**
+                                 * Song already exists in the database
+                                 */
                                 runOnUiThread(() -> {
-                                    // Show a message indicating that the song is already in favorites
+                                    /**
+                                     * Show a message indicating that the song is already in favorites
+                                     */
                                     String message = getString(R.string.songAlreadyExist) + " " + title;
                                     showSnackbar(message);
                                 });
@@ -169,15 +216,24 @@ public class SongDetailsActivity extends AppCompatActivity {
                 });
 
                 songDetailsBinding.btnDeleteFavorite.setOnClickListener(v -> {
-                    // Check if the song exists in the database
+                    /**
+                     * Check if the song exists in the database
+                      */
+
                     new Thread(() -> {
                         Song existingSong = songDAO.getSongByTitle(title);
                         if (existingSong != null) {
-                            // Song exists, delete it from the database
+                            /**
+                             * Song exists, delete it from the database
+                             */
                             songDAO.deleteSong(existingSong);
-                            // Update UI or perform any other actions if needed
+                            /**
+                             * Update UI or perform any other actions if needed
+                             */
                             runOnUiThread(() -> {
-                                // For example, show a message indicating deletion
+                                /**
+                                 * For example, show a message indicating deletion
+                                 */
                                 String message = getString(R.string.songDeleted) + " " + title;
                                 showSnackbar(message);
                             });
@@ -186,13 +242,17 @@ public class SongDetailsActivity extends AppCompatActivity {
                 });
 
             } else {
-                // Extras are from SongSearchActivity
+                /**
+                 * Extras are from SongSearchActivity
+                 */
                 String title = extras.getString("title");
                 int duration = extras.getInt("duration");
                 String albumName = extras.getString("albumName");
                 String albumCoverUrl = extras.getString("albumCoverUrl");
 
-                // Set the details in the views
+                /**
+                 * Set the details in the views
+                 */
                 songDetailsBinding.tvSongTitleDetail.setText(title);
                 songDetailsBinding.tvSongDurationDetail.setText(String.valueOf(duration));
                 songDetailsBinding.tvSongAlbumNameDetail.setText(albumName);
@@ -206,7 +266,9 @@ public class SongDetailsActivity extends AppCompatActivity {
                         InputStream inputStream = connection.getInputStream();
                         final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-                        // Update ImageView on the main UI thread
+                        /**
+                         * Update ImageView on the main UI thread
+                         */
                         runOnUiThread(() -> songDetailsBinding.ivSongAlbumCoverDetail.setImageBitmap(bitmap));
                     } catch (IOException e) {
                         Log.e(null, "Error downloading image: " + e.getMessage());
@@ -219,17 +281,25 @@ public class SongDetailsActivity extends AppCompatActivity {
                         new Thread(() -> {
                             Song existingSong = songDAO.getSongByTitle(title);
                             if (existingSong == null) {
-                                // Song does not exist, insert it into the database
+                                /**
+                                 * Song does not exist, insert it into the database
+                                 */
                                 insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
                                 runOnUiThread(() -> {
-                                    // Show a message indicating that the song was added to favorites
+                                    /**
+                                     * Show a message indicating that the song was added to favorites
+                                     */
                                     String message = getString(R.string.songAdded) + " " + title;
                                     showSnackbar(message);
                                 });
                             } else {
-                                // Song already exists in the database
+                                /**
+                                 * Song already exists in the database
+                                 */
                                 runOnUiThread(() -> {
-                                    // Show a message indicating that the song is already in favorites
+                                    /**
+                                     * Show a message indicating that the song is already in favorites
+                                      */
                                     String message = getString(R.string.songAlreadyExist) + " " + title;
                                     showSnackbar(message);
                                 });
@@ -247,15 +317,23 @@ public class SongDetailsActivity extends AppCompatActivity {
                 });
 
                 songDetailsBinding.btnDeleteFavorite.setOnClickListener(v -> {
-                    // Check if the song exists in the database
+                    /**
+                     * Check if the song exists in the database
+                     */
                     new Thread(() -> {
                         Song existingSong = songDAO.getSongByTitle(title);
                         if (existingSong != null) {
-                            // Song exists, delete it from the database
+                            /**
+                             * Song exists, delete it from the database
+                             */
                             songDAO.deleteSong(existingSong);
-                            // Update UI or perform any other actions if needed
+                            /**
+                             * Update UI or perform any other actions if needed
+                              */
                             runOnUiThread(() -> {
-                                // For example, show a message indicating deletion
+                                /**
+                                 * For example, show a message indicating deletion
+                                 */
                                 String message = getString(R.string.songDeleted) + " " + title;
                                 showSnackbar(message);
                             });

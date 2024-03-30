@@ -19,21 +19,50 @@
     <string name="error_msg">Please enter the name of a valid food</string>
 
 
-
-<!--Sunrise Sunset String -->
+    <!--Sunrise Sunset Showcase String -->
     <string name="showCase">Sunrise &amp; Sunset Showcase</string>
+    <string name="showDate">Date: </string>
+    <string name="showSunrise">Sunrise time: </string>
+    <string name="showSunset">Sunset time: </string>
+    <string name="location">Location: </string>
+    <string name="showLocation">Show Location: </string>"
 
+    <!--Buttons -->
     <string name="lookUpButton">Lookup</string>
     <string name="favouriteButton">Favourite Location</string>
     <string name="saveLocationButton">Add to Favourite</string>
+    <string name="deleteButton">Delete</string>
 
-    <string name="hintLatitude">Latitude From -90 to +90(N/S/E/W)
-                                \n(e.g. 90.000000N)</string>
+    <!-- Latitude, Longitude Format -->
+    <string name="hintLatitude">* Latitude input with 5 digits.</string>
+    <string name="hintLongitude">* Longitude input with 6 digits.</string>
 
-    <string name="hintLongitude">Latitude From -180 to +180(N/S/E/W)
-                                \n(e.g. 180.000000N)</string>
+    <!-- Latitude, Longitude Hint -->
+    <string name="enterLongitude">Enter the longitude</string>
+    <string name="enterLatitude">Enter the latitude</string>
+
+    <!-- table可能没用！！！！
+    <string name="tableDate">Date</string>
+    <string name="tableSunrise">Sunrise</string>
+    <string name="tableSunset">Sunset</string>
+    <string name="tableLatitude">Latitude</string>
+    <string name="tableLongitude">longitude</string>" -->
+
+    <!--  -->
+    <string name="current_date_time">Current Date: %s</string>
+    <string name="sunrise_time">Sunrise: %1$s</string>
+    <string name="sunset_time">Sunset: %1$s</string>
+    <string name="location_info">Location: %1$s, %2$s</string>
+    <string name="lat_long_info">Latitude: %1$s, Longitude: %2$s</string>
 
 
-<!-- -->
+    <!-- favourite_item -->
+    <string name="favouriteList">Favourite Location List</string>
+    <string name="tvDate"> Date: </string>
+    <string name="tvSunrise"> Sunrise: </string>
+    <string name="tvSunset"> Sunset: </string>
+    <string name="tvLatitude"> Latitude: </string>
+    <string name="tvLongitude"> longitude: </string>"
+
 
 </resources>

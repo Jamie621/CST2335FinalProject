@@ -17,28 +17,38 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!-- Hint for Latitude -->
 
-
-    <!-- Hint for Longitude -->
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="71dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myToolbar"
+        app:srcCompat="@drawable/sun"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/hintLatitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="72dp"
         android:text="@string/hintLatitude"
         android:textSize="16sp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="181dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/enterLatitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:autofillHints=""
-        android:hint="Enter the latitude"
-        android:inputType="numberDecimal|numberSigned"
+        android:hint="@string/enterLatitude"
+        android:inputType="text|numberSigned"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -50,8 +60,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="129dp"
-        android:hint="Enter the longitude"
-        android:inputType="numberDecimal|numberSigned"
+        android:hint="@string/enterLongitude"
+        android:inputType="text|numberSigned"
         android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/lookUpButton"
         app:layout_constraintHorizontal_bias="0.0"
@@ -63,7 +73,6 @@
         android:id="@+id/hintLongitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="37dp"
         android:text="@string/hintLongitude"
         android:textSize="16sp"
@@ -86,25 +95,23 @@
         android:id="@+id/favouriteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginEnd="40dp"
         android:text="@string/favouriteButton"
         android:textColor="#FF000000"
+        app:layout_constraintEnd_toStartOf="@+id/lookUpButton"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="27dp" />
+        tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="358dp"
-        android:layout_height="195dp"
-        android:layout_marginStart="26dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="26dp"
         android:background="#FFFFFF"
         android:orientation="vertical"
         android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/lookUpButton"
+        app:layout_constraintStart_toStartOf="@+id/enterLongitude"
         app:layout_constraintTop_toBottomOf="@id/enterLongitude">
 
         <TextView
@@ -119,33 +126,45 @@
             tools:layout_editor_absoluteX="109dp"
             tools:layout_editor_absoluteY="41dp" />
 
+
+
         <TextView
-            android:id="@+id/locationTextView"
+            android:id="@+id/showDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location: --"
+            android:text="@string/showDate"
+            android:textSize="16sp" />
+
+
+        <TextView
+            android:id="@+id/showSunrise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/showSunrise"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/dateTextView"
+            android:id="@+id/showSunset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date: --"
+            android:text="@string/showSunset"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/sunriseTextView"
+            android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sunrise time: --"
+            android:text="@string/location"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/sunsetTextView"
+            android:id="@+id/showLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sunset time: --"
+            android:text="@string/showLocation"
             android:textSize="16sp" />
+
+
 
         <Button
             android:id="@+id/saveLocationButton"
@@ -158,13 +177,6 @@
             tools:layout_editor_absoluteY="501dp" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="71dp"
-        android:layout_height="69dp"
-        app:srcCompat="@drawable/sun"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="172dp"
-        tools:layout_editor_absoluteY="88dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

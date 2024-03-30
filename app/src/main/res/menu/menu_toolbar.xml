@@ -6,7 +6,7 @@
         android:id="@+id/item_1"
         android:icon="@drawable/sun"
         android:title="Sunrise &amp; Sunset lookup"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/item_2"
         android:icon="@drawable/recipe"

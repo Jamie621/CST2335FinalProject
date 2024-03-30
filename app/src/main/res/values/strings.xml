@@ -25,4 +25,6 @@
     <string name="songAdded">Song added into favorites</string>
     <string name="songAlreadyExist">Song already in favorites</string>
     <string name="songDeleted">Song deleted from favorites</string>
+    <string name="enterLettersOnly">Please enter letters only</string>
+
 </resources>

@@ -26,4 +26,6 @@
     <string name="songAdded">歌曲加入收藏</string>
     <string name="songAlreadyExist">歌曲已在收藏中</string>
     <string name="songDeleted">歌曲取消收藏</string>
+    <string name="enterLettersOnly">请输入字母</string>
+
 </resources>

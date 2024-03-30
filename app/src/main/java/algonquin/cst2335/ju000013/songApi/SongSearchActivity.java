@@ -133,6 +133,13 @@ public class SongSearchActivity extends AppCompatActivity {
 
         songBinding.btnSongSearch.setOnClickListener(click -> {
             artistName = songBinding.etSong.getText().toString();
+
+            if (!isValidArtistName(artistName)) {
+                // Show error message and return
+                showSnackbar(getString(R.string.enterLettersOnly));
+                return;
+            }
+
             //save in shared preference
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(ARTIST_NAME_KEY, artistName);
@@ -215,6 +222,10 @@ public class SongSearchActivity extends AppCompatActivity {
         Snackbar.make(songBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
     }
 
+    private boolean isValidArtistName(String artistName) {
+        // Return true if the artistName contains only letters (no numbers or special characters)
+        return artistName.matches("[a-zA-Z]+");
+    }
 }
 
 

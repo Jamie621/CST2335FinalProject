@@ -11,13 +11,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
-import algonquin.cst2335.ju000013.songApi.Song;
-import algonquin.cst2335.ju000013.songApi.SongDAO;
-import algonquin.cst2335.ju000013.songApi.SongDatabase;
-
 public class SongFavoritesViewModel extends AndroidViewModel {
-    private MutableLiveData<List<Song>> songs;
-    private SongDAO songDAO;
+    private final MutableLiveData<List<Song>> songs;
+    private final SongDAO songDAO;
 
     public SongFavoritesViewModel(@NonNull Application application) {
         super(application);

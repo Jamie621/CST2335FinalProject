@@ -21,4 +21,7 @@ public interface SongDAO {
     // Add a method to delete all songs
     @Query("DELETE FROM Song")
     void deleteAllSongs();
+
+    @Query("SELECT * FROM Song WHERE title = :title")
+    Song getSongByTitle(String title);
 }

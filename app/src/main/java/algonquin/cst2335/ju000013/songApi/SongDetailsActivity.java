@@ -1,5 +1,6 @@
 package algonquin.cst2335.ju000013.songApi;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,9 +12,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.room.Room;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +34,9 @@ public class SongDetailsActivity extends AppCompatActivity {
     private ActivitySongDetailsBinding songDetailsBinding;
     private SongDatabase songDatabase;
     private SongDAO songDAO;
+
+    private String helpTitle;
+    private String instructions;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,7 +65,27 @@ public class SongDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(SongDetailsActivity.this, SongSearchActivity.class);
             startActivity(intent);
         }
+        else if (id == R.id.item_help) {
+            showHelpDialog(); // Show help dialog when help menu item is clicked
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showHelpDialog() {
+        helpTitle = getString(R.string.help_title);
+        instructions = getString(R.string.instructions);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(helpTitle);
+        builder.setMessage(instructions);
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // Handle OK button click
+                dialog.dismiss(); // Dismiss the dialog
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -75,57 +102,6 @@ public class SongDetailsActivity extends AppCompatActivity {
                 SongDatabase.class, "song-database").build();
         songDAO = songDatabase.sDAO();
 
-        // Get the extras passed from the previous activity
-
-//        Bundle extras = getIntent().getExtras();
-//
-//        if (extras != null) {
-//            String title = extras.getString("title");
-//            int duration = extras.getInt("duration");
-//            String albumName = extras.getString("albumName");
-//            String albumCoverUrl = extras.getString("albumCoverUrl");
-//
-//            // Set the details in the views
-//            songDetailsBinding.tvSongTitleDetail.setText(title);
-//            songDetailsBinding.tvSongDurationDetail.setText(String.valueOf(duration));
-//            songDetailsBinding.tvSongAlbumNameDetail.setText(albumName);
-//
-//            new Thread(() -> {
-//                try {
-//                    URL detailUrl = new URL(albumCoverUrl);
-//                    HttpURLConnection connection = (HttpURLConnection) detailUrl.openConnection();
-//                    connection.setDoInput(true);
-//                    connection.connect();
-//                    InputStream inputStream = connection.getInputStream();
-//                    final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//
-//                    // Update ImageView on the main UI thread
-//                    runOnUiThread(() -> songDetailsBinding.ivSongAlbumCoverDetail.setImageBitmap(bitmap));
-//                } catch (IOException e) {
-//                    Log.e(null, "Error downloading image: " + e.getMessage());
-//                }
-//            }).start();
-//
-//
-//
-//            songDetailsBinding.btnAddFavorite.setOnClickListener(new View.OnClickListener(){
-//
-//                @Override
-//                public void onClick(View v) {
-//                    insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
-//                }
-//            });
-//
-//            songDetailsBinding.btnShowFavorites.setOnClickListener(new View.OnClickListener(){
-//
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(SongDetailsActivity.this, SongFavoritesActivity.class);
-//                    startActivity(intent);
-//                }
-//            });
-//
-//        }
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
@@ -162,7 +138,25 @@ public class SongDetailsActivity extends AppCompatActivity {
                 songDetailsBinding.btnAddFavorite.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
+                        new Thread(() -> {
+                            Song existingSong = songDAO.getSongByTitle(title);
+                            if (existingSong == null) {
+                                // Song does not exist, insert it into the database
+                                insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
+                                runOnUiThread(() -> {
+                                    // Show a message indicating that the song was added to favorites
+                                    String message = getString(R.string.songAdded) + " " + title;
+                                    showSnackbar(message);
+                                });
+                            } else {
+                                // Song already exists in the database
+                                runOnUiThread(() -> {
+                                    // Show a message indicating that the song is already in favorites
+                                    String message = getString(R.string.songAlreadyExist) + " " + title;
+                                    showSnackbar(message);
+                                });
+                            }
+                        }).start();
                     }
                 });
 
@@ -173,6 +167,24 @@ public class SongDetailsActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+
+                songDetailsBinding.btnDeleteFavorite.setOnClickListener(v -> {
+                    // Check if the song exists in the database
+                    new Thread(() -> {
+                        Song existingSong = songDAO.getSongByTitle(title);
+                        if (existingSong != null) {
+                            // Song exists, delete it from the database
+                            songDAO.deleteSong(existingSong);
+                            // Update UI or perform any other actions if needed
+                            runOnUiThread(() -> {
+                                // For example, show a message indicating deletion
+                                String message = getString(R.string.songDeleted) + " " + title;
+                                showSnackbar(message);
+                            });
+                        }
+                    }).start();
+                });
+
             } else {
                 // Extras are from SongSearchActivity
                 String title = extras.getString("title");
@@ -204,7 +216,25 @@ public class SongDetailsActivity extends AppCompatActivity {
                 songDetailsBinding.btnAddFavorite.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
-                        insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
+                        new Thread(() -> {
+                            Song existingSong = songDAO.getSongByTitle(title);
+                            if (existingSong == null) {
+                                // Song does not exist, insert it into the database
+                                insertSongIntoDatabase(title, duration, albumName, albumCoverUrl);
+                                runOnUiThread(() -> {
+                                    // Show a message indicating that the song was added to favorites
+                                    String message = getString(R.string.songAdded) + " " + title;
+                                    showSnackbar(message);
+                                });
+                            } else {
+                                // Song already exists in the database
+                                runOnUiThread(() -> {
+                                    // Show a message indicating that the song is already in favorites
+                                    String message = getString(R.string.songAlreadyExist) + " " + title;
+                                    showSnackbar(message);
+                                });
+                            }
+                        }).start();
                     }
                 });
 
@@ -214,6 +244,23 @@ public class SongDetailsActivity extends AppCompatActivity {
                         Intent intent = new Intent(SongDetailsActivity.this, SongFavoritesActivity.class);
                         startActivity(intent);
                     }
+                });
+
+                songDetailsBinding.btnDeleteFavorite.setOnClickListener(v -> {
+                    // Check if the song exists in the database
+                    new Thread(() -> {
+                        Song existingSong = songDAO.getSongByTitle(title);
+                        if (existingSong != null) {
+                            // Song exists, delete it from the database
+                            songDAO.deleteSong(existingSong);
+                            // Update UI or perform any other actions if needed
+                            runOnUiThread(() -> {
+                                // For example, show a message indicating deletion
+                                String message = getString(R.string.songDeleted) + " " + title;
+                                showSnackbar(message);
+                            });
+                        }
+                    }).start();
                 });
             }
         }
@@ -225,4 +272,9 @@ public class SongDetailsActivity extends AppCompatActivity {
             songDAO.insertSong(song);
         }).start();
     }
+
+    private void showSnackbar(String message) {
+        Snackbar.make(songDetailsBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
+    }
+
 }

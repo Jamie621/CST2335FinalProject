@@ -1,8 +1,12 @@
 package algonquin.cst2335.ju000013.songApi;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,10 +45,17 @@ public class SongSearchActivity extends AppCompatActivity {
     SongViewModel songViewModel;
     SongAdapter songAdapter;
 
+    private static final String PREFS_NAME = "MyPrefsFile";
+    private static final String ARTIST_NAME_KEY = "artist_name";
+
+
     private final String URL_REQUEST_DATA = "https://api.deezer.com/search/artist/?q=";
     protected String artistName;
     protected RequestQueue queue;
     private final String TAG = getClass().getSimpleName();
+
+    private String helpTitle;
+    private String instructions;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,7 +84,27 @@ public class SongSearchActivity extends AppCompatActivity {
             Intent intent = new Intent(SongSearchActivity.this, SongSearchActivity.class);
             startActivity(intent);
         }
+        else if (id == R.id.item_help) {
+            showHelpDialog(); // Show help dialog when help menu item is clicked
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showHelpDialog() {
+        helpTitle = getString(R.string.help_title);
+        instructions = getString(R.string.instructions);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(helpTitle);
+        builder.setMessage(instructions);
+        builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // Handle OK button click
+                dialog.dismiss(); // Dismiss the dialog
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -94,12 +126,17 @@ public class SongSearchActivity extends AppCompatActivity {
 
         queue = Volley.newRequestQueue(this);
 
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        //get from shared preference
+        artistName = prefs.getString(ARTIST_NAME_KEY, "");
+        songBinding.etSong.setText(artistName);
+
         songBinding.btnSongSearch.setOnClickListener(click -> {
-
             artistName = songBinding.etSong.getText().toString();
-
-
-
+            //save in shared preference
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(ARTIST_NAME_KEY, artistName);
+            editor.apply();
             // Construct the URL with the artist's name
             String url;
             try {
@@ -156,7 +193,7 @@ public class SongSearchActivity extends AppCompatActivity {
                                 queue.add(tracklistRequest);
                             } else {
                                 // No artist found with the given name
-                                //songBinding.tvUrl.setText("No tracklist found for the artist: " + artistName);
+                                showSnackbar("No tracklist found for the artist: " + artistName);
                             }
                         } catch (JSONException e) {
                             Log.e(TAG, "Error parsing JSON: " + e.getMessage());
@@ -172,7 +209,10 @@ public class SongSearchActivity extends AppCompatActivity {
         songBinding.rvSongs.setLayoutManager(new LinearLayoutManager(this));
         songAdapter = new SongAdapter(songsEntity,this);//put arraylist into adapter
         songBinding.rvSongs.setAdapter(songAdapter);//set adapter to recycler view
-
+    }
+    // Inside the SongSearchActivity class
+    private void showSnackbar(String message) {
+        Snackbar.make(songBinding.getRoot(), message, Snackbar.LENGTH_SHORT).show();
     }
 
 }

@@ -21,11 +21,10 @@ import java.net.URL;
 import java.util.List;
 
 import algonquin.cst2335.ju000013.R;
-import algonquin.cst2335.ju000013.songApi.Song;
 
 public class SongFavoritesAdapter extends RecyclerView.Adapter<SongFavoritesAdapter.SongFavoritesViewHolder> {
     private List<Song> songsEntity;
-    private Context context;
+    private final Context context;
 
     public SongFavoritesAdapter(List<Song> songsEntity, Context context) {
         this.songsEntity = songsEntity;
@@ -88,11 +87,11 @@ public class SongFavoritesAdapter extends RecyclerView.Adapter<SongFavoritesAdap
         return songsEntity == null ? 0 : songsEntity.size();
     }
 
-    public class SongFavoritesViewHolder extends RecyclerView.ViewHolder {
-        private TextView songName;
-        private TextView songDuration;
-        private TextView songAlbumName;
-        private ImageView songAlbumCover;
+    public static class SongFavoritesViewHolder extends RecyclerView.ViewHolder {
+        private final TextView songName;
+        private final TextView songDuration;
+        private final TextView songAlbumName;
+        private final ImageView songAlbumCover;
 
         public SongFavoritesViewHolder(@NonNull View itemView) {
             super(itemView);

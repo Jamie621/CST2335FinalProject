@@ -23,8 +23,8 @@ import java.util.List;
 import algonquin.cst2335.ju000013.R;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
-    private List<Song> songsEntity;
-    private Context context;
+    private final List<Song> songsEntity;
+    private final Context context;
 
     public SongAdapter(List<Song> songsEntity, Context context) {
         this.songsEntity = songsEntity;
@@ -66,10 +66,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     }
 
     public class SongViewHolder extends RecyclerView.ViewHolder{
-        private TextView songName;
-        private TextView songDuration;
-        private TextView songAlbumName;
-        private ImageView songAlbumCover;
+        private final TextView songName;
+        private final TextView songDuration;
+        private final TextView songAlbumName;
+        private final ImageView songAlbumCover;
         public SongViewHolder(@NonNull View itemView) {
             super(itemView);
             songName = itemView.findViewById(R.id.textViewSongTitle);
@@ -82,7 +82,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
                 if (position != RecyclerView.NO_POSITION) {
                     Song song = songsEntity.get(position);
                     // Handle click event
-                    Toast.makeText(context, "Item clicked: " + song.getTitle(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.itemClicked) + song.getTitle(), Toast.LENGTH_SHORT).show();
                     // Start SongDetailsActivity and pass song details as extras
                     Intent intent = new Intent(context, SongDetailsActivity.class);
                     intent.putExtra("title", song.getTitle());

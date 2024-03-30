@@ -14,7 +14,7 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Song Search"
+        app:title="@string/deezer_song_search_api"
         app:titleTextColor="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -31,12 +31,13 @@
 
     <EditText
         android:id="@+id/etSong"
+        android:inputType="text"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="200dp"
         android:layout_marginEnd="191dp"
         android:layout_marginBottom="8dp"
-        android:hint="type artist name"
+        android:hint="@string/typeArtistName"
         app:layout_constraintBottom_toTopOf="@+id/btnSongSearch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -47,7 +48,7 @@
         android:layout_marginStart="159dp"
         android:layout_marginEnd="158dp"
         android:layout_marginBottom="8dp"
-        android:text="Search"
+        android:text="@string/searchButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

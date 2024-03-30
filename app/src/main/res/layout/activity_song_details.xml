@@ -100,4 +100,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAddFavorite" />
 
+
 </androidx.constraintlayout.widget.ConstraintLayout>

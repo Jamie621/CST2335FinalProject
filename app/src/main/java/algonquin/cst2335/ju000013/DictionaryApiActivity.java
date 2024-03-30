@@ -1,3 +1,16 @@
+/**
+ * This activity serves as the main interface for the Dictionary API feature of the app. Users can
+ * enter a word to search for its definitions using the DictionaryAPI.dev service. The activity allows
+ * for the searching of words, displaying their definitions, and provides options to save definitions
+ * and navigate to a saved words screen.
+ *
+ * @author Jungmin Ju
+ * @labSection CST2335 011
+ * @creationDate 2023-03-29
+ */
+
+
+
 package algonquin.cst2335.ju000013;
 
 import android.content.Intent;
@@ -78,6 +91,13 @@ public class DictionaryApiActivity extends AppCompatActivity {
         btnGoToSaved.setOnClickListener(v -> startActivity(new Intent(DictionaryApiActivity.this, SavedWordsActivity.class)));
     }
 
+
+
+    /**
+     * Saves all currently displayed definitions to the database.
+     *
+     * @param definitions List of definitions to be saved.
+     */
     private void saveAllDefinitions(List<Definition> definitions) {
         for (Definition definition : definitions) {
             new InsertWordTask().execute(new WordEntity(definition.getWord(), definition.getDefinition(), System.currentTimeMillis()));
@@ -100,6 +120,10 @@ public boolean onOptionsItemSelected(MenuItem item) {
     return super.onOptionsItemSelected(item);
 }
 
+
+    /**
+     * Displays a help dialog to assist users with the functionality of the Dictionary API feature.
+     */
     private void showHelpDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.help_dialog_title)
@@ -108,15 +132,25 @@ public boolean onOptionsItemSelected(MenuItem item) {
                 .show();
     }
 
+
+    /**
+     * Initiates a request to fetch definitions for a given word using the DictionaryAPI.dev API.
+     *
+     * @param word The word for which definitions are to be fetched.
+     */
     private void fetchDefinitions(String word) {
         String url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + word;
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url,
                 this::parseAndDisplayDefinitions,
-                error -> Toast.makeText(this, "Error fetching definitions: " + error.getMessage(), Toast.LENGTH_SHORT).show()
+                error -> Toast.makeText(this, getString(R.string.error_fetching_definitions, error.getMessage()), Toast.LENGTH_SHORT).show()
         );
         requestQueue.add(jsonArrayRequest);
     }
-
+    /**
+     * Parses the JSON response from the API and updates the RecyclerView adapter with new definitions.
+     *
+     * @param response JSON response containing word definitions from the API.
+     */
     private void parseAndDisplayDefinitions(JSONArray response) {
         try {
             List<Definition> definitions = new ArrayList<>();
@@ -135,7 +169,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
             }
             runOnUiThread(() -> dictionaryAdapter.updateData(definitions));
         } catch (Exception e) {
-            runOnUiThread(() -> Toast.makeText(this, "Error parsing JSON response: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            runOnUiThread(() -> Toast.makeText(this, getString(R.string.error_parsing_json_response, e.getMessage()), Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -144,7 +178,9 @@ public boolean onOptionsItemSelected(MenuItem item) {
         super.onSaveInstanceState(outState);
         outState.putString("lastSearch", editTextWord.getText().toString().trim());
     }
-
+    /**
+     * Inner class representing a definition object, containing a word and its definition.
+     */
     private static class Definition {
         private final String word;
         private final String definition;
@@ -163,6 +199,9 @@ public boolean onOptionsItemSelected(MenuItem item) {
         }
     }
 
+    /**
+     * AsyncTask class for inserting a word entity into the database.
+     */
     private class InsertWordTask extends AsyncTask<WordEntity, Void, Void> {
         @Override
         protected Void doInBackground(WordEntity... wordEntities) {
@@ -176,6 +215,9 @@ public boolean onOptionsItemSelected(MenuItem item) {
         }
     }
 
+    /**
+     * RecyclerView adapter class for displaying word definitions in the UI.
+     */
     class DictionaryAdapter extends RecyclerView.Adapter<DictionaryAdapter.ViewHolder> {
         private List<Definition> definitions;
         private AppDatabase db;

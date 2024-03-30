@@ -1,3 +1,13 @@
+/**
+ * SavedWordsActivity provides an interface for users to view, delete, and manage words that have been
+ * saved from previous searches. It utilizes a RecyclerView to display the list of saved words and offers
+ * functionality to delete individual or multiple selected words.
+ *
+ * @author Jungmin Ju
+ * @labSection CST2335 011
+ * @creationDate 2023-03-29
+ */
+
 package algonquin.cst2335.ju000013;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -30,7 +40,7 @@ public class SavedWordsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_words);
-        Toolbar toolbar = findViewById(R.id.toolbar_saved_words); // Make sure this ID matches your layout file
+        Toolbar toolbar = findViewById(R.id.toolbar_saved_words);
         setSupportActionBar(toolbar);
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "dictionary_db").build();
         savedWordsRecyclerView = findViewById(R.id.savedWordsRecyclerView);
@@ -73,6 +83,9 @@ public class SavedWordsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Displays a help dialog to provide guidance to users on how to interact with the saved words interface.
+     */
     private void showHelpDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.help_dialog_title)
@@ -83,7 +96,9 @@ public class SavedWordsActivity extends AppCompatActivity {
 
 
 
-
+    /**
+     * Initiates the process of loading saved words from the database asynchronously.
+     */
     private void loadSavedWords() {
         new LoadWordsTask().execute();
     }
@@ -100,6 +115,9 @@ public class SavedWordsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * AsyncTask for deleting selected words from the database. On completion, updates the RecyclerView adapter to reflect changes.
+     */
     private class DeleteWordsTask extends AsyncTask<Long, Void, Set<Long>> {
         @Override
         protected Set<Long> doInBackground(Long... ids) {
@@ -110,7 +128,7 @@ public class SavedWordsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Set<Long> deletedIds) {
             savedWordsAdapter.removeItems(deletedIds);
-            Toast.makeText(SavedWordsActivity.this, "Selected words deleted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SavedWordsActivity.this, R.string.words_deleted, Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -1,3 +1,13 @@
+/**
+ * SavedWordsAdapter is an adapter for the RecyclerView in SavedWordsActivity. It manages the display
+ * of saved words, including their definition and the date they were saved. It also allows for selection
+ * of items for potential deletion.
+ *
+ * @author Jungmin Ju
+ * @labSection CST2335 011
+ * @creationDate 2023-03-29
+ */
+
 package algonquin.cst2335.ju000013;
 
 
@@ -16,16 +26,28 @@ public class SavedWordsAdapter extends RecyclerView.Adapter<SavedWordsAdapter.Vi
     private final List<WordEntity> words;
     private final HashSet<Long> selectedIds = new HashSet<>();
 
+    /**
+     * Constructor for SavedWordsAdapter.
+     * @param words List of WordEntity objects to be displayed.
+     */
     public SavedWordsAdapter(List<WordEntity> words) {
         this.words = words;
     }
 
+    /**
+     * Updates the dataset of the adapter and refreshes the RecyclerView.
+     * @param newWords List of new WordEntity objects to be displayed.
+     */
     public void updateData(List<WordEntity> newWords) {
         words.clear();
         words.addAll(newWords);
         notifyDataSetChanged();
     }
 
+    /**
+     * Retrieves a set of selected word IDs for deletion or manipulation.
+     * @return HashSet of selected word IDs.
+     */
     public HashSet<Long> getSelectedWordIds() {
         return new HashSet<>(selectedIds);
     }
@@ -58,12 +80,20 @@ public class SavedWordsAdapter extends RecyclerView.Adapter<SavedWordsAdapter.Vi
         return words.size();
     }
 
+    /**
+     * Removes items from the adapter based on a set of IDs and refreshes the RecyclerView.
+     * @param idsToRemove Set of WordEntity IDs to remove.
+     */
     public void removeItems(Set<Long> idsToRemove) {
         words.removeIf(word -> idsToRemove.contains(word.id));
         notifyDataSetChanged();
         selectedIds.removeAll(idsToRemove);
     }
 
+    /**
+     * ViewHolder class for RecyclerView items. Holds references to the word, definition,
+     * date text views, and the selection checkbox.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         final TextView wordTextView;
         final TextView definitionTextView;

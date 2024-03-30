@@ -26,4 +26,8 @@
 <string name="definition_saved">정의가 저장되었습니다.</string>
 <string name="words_deleted">선택한 단어가 삭제되었습니다.</string>
 
+    <string name="error_fetching_definitions">E정의를 가져오는 중에 오류가 발생했습니다: %1$s</string>
+    <string name="error_parsing_json_response">JSON 응답을 구문 분석하는 중에 오류가 발생했습니다.: %1$s</string>
+
+
 </resources>

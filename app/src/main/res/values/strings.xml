@@ -22,6 +22,10 @@
     <string name="definition_saved">Definition saved.</string>
     <string name="words_deleted">Selected words deleted.</string>
 
+    <string name="error_fetching_definitions">Error fetching definitions: %1$s</string>
+    <string name="error_parsing_json_response">Error parsing JSON response: %1$s</string>
+
+
 
 
 </resources>

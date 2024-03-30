@@ -1,8 +1,14 @@
+/**
+ * Represents the entity for a word stored in the database. This class is used by Room to create
+ * the table structure for stored words, including their definitions and the date they were saved.
+ * Each instance of this class represents a row in the "words" table.
+ *
+ * @author Jungmin Ju
+ * @labSection CST2335 011
+ * @creationDate 2023-03-29
+ */
 package algonquin.cst2335.ju000013;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -21,44 +27,16 @@ public class WordEntity {
     @ColumnInfo(name = "saved_date")
     public long savedDate;
 
-    // Constructor
+    /**
+     * Constructs a new WordEntity with the specified word, definition, and saved date.
+     *
+     * @param word The word to be stored.
+     * @param definition The definition of the word.
+     * @param savedDate The timestamp when the word was saved.
+     */
     public WordEntity(String word, String definition, long savedDate) {
         this.word = word;
         this.definition = definition;
         this.savedDate = savedDate;
     }
-
-    // Getters and setters if you're not using public fields
-    // It's generally a good idea to keep fields private and access them via getters/setters
- /*   public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getWord() {
-        return word;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
-    }
-
-    public String getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
-
-    public long getSavedDate() {
-        return savedDate;
-    }
-
-    public void setSavedDate(long savedDate) {
-        this.savedDate = savedDate;
-    }*/
 }

@@ -13,12 +13,12 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\jujun\.android\avd\Pixel_2_API_27.avd" />
+                  <value value="C:\Users\jujun\.android\avd\Pixel_3a_API_27.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-29T04:17:30.885649100Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-03-31T20:51:07.947118200Z" />
         </State>
       </entry>
       <entry key="testDisplayOfSearchInputField()">

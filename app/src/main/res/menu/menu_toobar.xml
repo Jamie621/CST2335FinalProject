@@ -5,21 +5,28 @@
     <item
         android:id="@+id/button1"
         android:icon="@drawable/sun"
-        android:title="@string/sunrise_sunset_lookup"
+
+        android:title="Sunrise &amp; Sunset lookup"
+
         app:showAsAction="always" />
     <item
         android:id="@+id/button2"
         android:icon="@drawable/recipe"
-        android:title="@string/recipe_search"
+
+        android:title="Recipe Search"
+
         app:showAsAction="always" />
     <item
         android:id="@+id/button3"
         android:icon="@drawable/dictionary"
-        android:title="@string/dictionary_api"
+
+        android:title="Dictionary API"
+
         app:showAsAction="always" />
     <item
         android:id="@+id/button4"
         android:icon="@drawable/song"
+
         android:title="@string/deezer_song_search_api"
         app:showAsAction="always" />
 
@@ -28,4 +35,5 @@
         android:icon="@drawable/help"
         android:title="Help"
         app:showAsAction="never" />
+
 </menu>

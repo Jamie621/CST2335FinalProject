@@ -16,6 +16,7 @@ import java.util.Set;
 
 import algonquin.cst2335.ju000013.recipeapi.RecipeSearchActivity;
 import algonquin.cst2335.ju000013.songApi.SongSearchActivity;
+import algonquin.cst2335.ju000013.sunrisesunsetApi.SunriseSunsetLookupActivity;
 
 /**
  * @Author: Jungmin Ju, Wei Deng, Fei Wu, Zhaohong Huang.
@@ -24,11 +25,16 @@ import algonquin.cst2335.ju000013.songApi.SongSearchActivity;
  */
 
 public class MainActivity extends AppCompatActivity {
+
+
+
+
     /**
      * To create the option menu
      * @param menu The options menu in which you place your items
      * @return
      */
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -44,9 +50,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.button1){
 
-        } else if (id == R.id.button2) {
+        if (id == R.id.item_1){
+            Intent intent = new Intent(MainActivity.this, SunriseSunsetLookupActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.item_2) {
+
             Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
         } else if (id == R.id.button3) {
@@ -77,23 +86,28 @@ public class MainActivity extends AppCompatActivity {
          Button buttonDictionaryApi = findViewById(R.id.button3);
          Button buttonSongSearch = findViewById(R.id.button4);
 
-        /**
-         *  set toolbar
-         */
+
+
         Toolbar tool_bar = findViewById(R.id.toolbar);
         setSupportActionBar(tool_bar);
 
-        /**
-         * Set click listener for Recipe Search
-         */
+
+      buttonSunriseSunsetLookup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SunriseSunsetLookupActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
         buttonRecipeSearch.setOnClickListener(click ->{
             Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
         });
 
-        /**
-         * Set click listener for Dictionary API
-         */
+
           buttonDictionaryApi.setOnClickListener(new View.OnClickListener() {
             @Override
              public void onClick(View v) {
@@ -102,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
            });
+
 
 
         /**
@@ -113,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                /**
                 * Replace DeezerSongSearchApiActivity.class with the actual class name for this activity
                 */
+
               Intent intent = new Intent(MainActivity.this, SongSearchActivity.class);
               startActivity(intent);
           }

@@ -1,10 +1,5 @@
 package algonquin.cst2335.ju000013.songApi;
-/**
- * Purpose: This file is the adapter working between search and the first recycler view
- * Author: Wei Deng
- * Lab section: 2335-011
- * Date updated: 2024-03-30
- */
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,7 +21,12 @@ import java.net.URL;
 import java.util.List;
 
 import algonquin.cst2335.ju000013.R;
-
+/**
+ * Purpose: This file is the adapter working between search and the first recycler view
+ * Author: Wei Deng
+ * Lab section: 2335-011
+ * Date updated: 2024-03-30
+ */
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder> {
     /**
      * private attributes
@@ -36,8 +36,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
     /**
      * get the entity and context
-     * @param songsEntity
-     * @param context
+     * @param songsEntity: for storage of song info
+     * @param context: indicator
      */
     public SongAdapter(List<Song> songsEntity, Context context) {
         this.songsEntity = songsEntity;
@@ -49,7 +49,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
      * @param parent   The ViewGroup into which the new View will be added after it is bound to
      *                 an adapter position.
      * @param viewType The view type of the new View.
-     * @return
+     * @return: songViewholder
      */
     @NonNull
     @Override
@@ -88,7 +88,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
     /**
      * get item count
-     * @return
+     * @return: integer of item number
      */
     @Override
     public int getItemCount() {

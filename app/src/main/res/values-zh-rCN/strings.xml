@@ -8,7 +8,6 @@
     <string name="showSunrise">"日出时间: "</string>
     <string name="showSunset">日落时间:</string>
     <string name="location">"地点: "</string>
-    <string name="showLocation">展示地点:</string>
     <string name="showLatitude">纬度:</string>
     <string name="showLongitude">经度:</string>
     <string name="resault_date_time">时间 &amp; 日期: %s</string>

@@ -3,25 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/button1"
+        android:id="@+id/item_1"
         android:icon="@drawable/sun"
-
         android:title="Sunrise &amp; Sunset lookup"
-
         app:showAsAction="always" />
     <item
-        android:id="@+id/button2"
+        android:id="@+id/item_2"
         android:icon="@drawable/recipe"
-
         android:title="Recipe Search"
-
         app:showAsAction="always" />
     <item
-        android:id="@+id/button3"
+        android:id="@+id/item_3"
         android:icon="@drawable/dictionary"
-
         android:title="Dictionary API"
-
         app:showAsAction="always" />
     <item
         android:id="@+id/button4"
@@ -35,5 +29,10 @@
         android:icon="@drawable/help"
         android:title="Help"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/sunHelp"
+        android:title="Help"
+        android:text="@string/sunHelp" />
 
 </menu>

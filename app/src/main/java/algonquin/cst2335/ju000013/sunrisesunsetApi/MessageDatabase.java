@@ -9,24 +9,51 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-// Specify the entities and the version number for the database
+/**
+ * MessageDatabase is a Room Database class that encapsulates a SQLite database for storing favourite locations.
+ * It defines the database's structure and serves as the main access point for the underlying connection to the app's persisted data.
+ *
+ * This class includes:
+ * - Singleton pattern to ensure only one instance of the database is created.
+ * - ExecutorService for performing database operations asynchronously.
+ * - A method to get the database instance.
+ * - DAOs for accessing the database.
+ *
+ * @author Zhaohong Huang
+ * @Labsection: CST2335-011
+ * @Creation Date: 2024-03-29
+ *
+  */
 @Database(entities = {SaveLocation.class}, version = 1, exportSchema = false)
 public abstract class MessageDatabase extends RoomDatabase {
 
-    // Singleton instance of the database
+    // Singleton instance of the database to prevent multiple instances of the database opening at the same time.
     private static volatile MessageDatabase INSTANCE;
 
-    // Define the DAOs that work with the database
+
+    /**
+     * Abstract method to get an instance of the FavouriteDao.
+     * This method is automatically implemented by Room to access the database.
+     *
+     * @return Instance of FavouriteDao.
+     */
     public abstract FavouriteDao favouriteDao();
 
-    // Define the number of threads for the ExecutorService
+    // The number of threads to be used for asynchronous database operations.
     private static final int NUMBER_OF_THREADS = 4;
 
-    // Create an ExecutorService with a fixed thread pool to be used for database operations
+    // ExecutorService with a fixed thread pool for database write operations.
     static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
 
-    // Method to get the singleton instance of the database
+    /**
+     * Returns the singleton instance of the MessageDatabase.
+     * If the instance is null, initializes a new database instance.
+     * This method uses a synchronized block to avoid creating multiple instances in a multi-threaded environment.
+     *
+     * @param context The Context for accessing system resources and services.
+     * @return The singleton instance of MessageDatabase.
+     */
     public static MessageDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (MessageDatabase.class) {

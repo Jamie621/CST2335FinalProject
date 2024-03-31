@@ -151,20 +151,18 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/location"
+            android:id="@+id/showLatitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/location"
+            android:text="@string/showLatitude"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/showLocation"
+            android:id="@+id/showLongitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/showLocation"
+            android:text="@string/showLongitude"
             android:textSize="16sp" />
-
-
 
         <Button
             android:id="@+id/saveLocationButton"
@@ -176,7 +174,5 @@
             tools:layout_editor_absoluteX="116dp"
             tools:layout_editor_absoluteY="501dp" />
     </LinearLayout>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

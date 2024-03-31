@@ -5,27 +5,33 @@
 
 -->
 
-
 <resources>
     <string name="app_name">CST2335FinalProject</string>
     <string name="Final_Project" translatable="false">Final Project</string>
 
     <string name="sunrise_sunset_lookup">Sunrise &amp; Sunset lookup</string>
-    <string name="recipe_search">Recipe Search</string>
-    <string name="dictionary_api">Dictionary API</string>
-    <string name="deezer_song_search_api">Deezer song search api</string>
+    <string name="recipe_search" translatable="false">Recipe Search</string>
+    <string name="dictionary_api" translatable="false">Dictionary API</string>
+    <string name="deezer_song_search_api" translatable="false">Deezer song search api</string>
 
     <string name="Lookup">Lookup</string>
-    <string name="error_msg">Please enter the name of a valid food</string>
+    <string name="error_msg" translatable="false">Please enter the name of a valid food</string>
+    <!--                                                                      -->
 
-
-    <!--Sunrise Sunset Showcase String -->
+    <!-- Showcase title -->
     <string name="showCase">Sunrise &amp; Sunset Showcase</string>
-    <string name="showDate">Date: </string>
+    <string name="showDate">Date &amp; Time: </string>
     <string name="showSunrise">Sunrise time: </string>
     <string name="showSunset">Sunset time: </string>
-    <string name="location">Location: </string>
-    <string name="showLocation">Show Location: </string>"
+    <string name="showLatitude">Latitude: </string>
+    <string name="showLongitude">Longitude: </string>"
+
+    <!-- Show case Resault -->
+    <string name="resault_date_time">Date &amp; Time: %s</string>
+    <string name="resault_sunrise">Sunrise: %s</string>
+    <string name="resault_sunset">Sunset: %s</string>
+    <string name="resault_latitude">Latitude: %s</string>
+    <string name="resault_longitude">Longitude: %s</string>
 
     <!--Buttons -->
     <string name="lookUpButton">Lookup</string>
@@ -41,28 +47,25 @@
     <string name="enterLongitude">Enter the longitude</string>
     <string name="enterLatitude">Enter the latitude</string>
 
-    <!-- table可能没用！！！！
-    <string name="tableDate">Date</string>
-    <string name="tableSunrise">Sunrise</string>
-    <string name="tableSunset">Sunset</string>
-    <string name="tableLatitude">Latitude</string>
-    <string name="tableLongitude">longitude</string>" -->
-
-    <!--  -->
-    <string name="current_date_time">Current Date: %s</string>
-    <string name="sunrise_time">Sunrise: %1$s</string>
-    <string name="sunset_time">Sunset: %1$s</string>
-    <string name="location_info">Location: %1$s, %2$s</string>
-    <string name="lat_long_info">Latitude: %1$s, Longitude: %2$s</string>
-
-
     <!-- favourite_item -->
     <string name="favouriteList">Favourite Location List</string>
-    <string name="tvDate"> Date: </string>
-    <string name="tvSunrise"> Sunrise: </string>
-    <string name="tvSunset"> Sunset: </string>
+    <string name="tvDate">Current Date &amp; Time:  </string>
+    <string name="tvSunrise"> %s </string>
+    <string name="tvSunset"> %s </string>
     <string name="tvLatitude"> Latitude: </string>
-    <string name="tvLongitude"> longitude: </string>"
+    <string name="tvLongitude"> longitude: </string>
+
+
+    <!-- Toast, Snackbar, AlertDialog -->
+    <string name="invalidLatitude">Invalid Latitude, please enter again!</string>
+    <string name="invalidLongitude">Invalid Longitude, please enter again!</string>
+    <string name="locationAddedSuccessfully">Location Added Successfully!</string>
+    <string name="deleteLocationAlert">Do you want to delete this location?</string>
+    <string name="new_location_added">New location added!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="sunHelp">This App is for check Sunrise and Sunset time. Follow the hint to enter Latitude and longitude. You will see the result in the showcase after click LOOKUP.</string>
+    <string name="location" translatable="false">" "</string>
 
 
 </resources>

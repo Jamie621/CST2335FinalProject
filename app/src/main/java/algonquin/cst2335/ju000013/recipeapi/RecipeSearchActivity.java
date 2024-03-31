@@ -56,6 +56,8 @@ import algonquin.cst2335.ju000013.databinding.SearchResultBinding;
  *
  * @author Fei Wu
  * @version 1.0
+ * @Labsection: CST2335-011
+ * @CreationDate: 2024-03-29
  */
 public class RecipeSearchActivity extends AppCompatActivity {
 

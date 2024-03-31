@@ -47,21 +47,20 @@ public class MainActivity extends AppCompatActivity {
      * @param item The menu item that was selected.
      * @return
      */
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.item_1){
             Intent intent = new Intent(MainActivity.this, SunriseSunsetLookupActivity.class);
             startActivity(intent);
         } else if (id == R.id.item_2) {
-
             Intent intent = new Intent(MainActivity.this, RecipeSearchActivity.class);
             startActivity(intent);
-        } else if (id == R.id.button3) {
+        } else if (id == R.id.item_3) {
             Intent intent = new Intent(MainActivity.this, DictionaryApiActivity.class);
             startActivity(intent);
-        } else if (id == R.id.button4) {
+        } else if (id == R.id.item_4) {
             Intent intent = new Intent(MainActivity.this, SongSearchActivity.class);
             startActivity(intent);
         }

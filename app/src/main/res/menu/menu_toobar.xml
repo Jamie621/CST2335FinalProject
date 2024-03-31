@@ -6,31 +6,23 @@
         android:id="@+id/item_1"
         android:icon="@drawable/sun"
         android:title="Sunrise &amp; Sunset lookup"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/item_2"
         android:icon="@drawable/recipe"
         android:title="Recipe Search"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/item_3"
         android:icon="@drawable/dictionary"
         android:title="Dictionary API"
-        app:showAsAction="never" />
-
-<!--
-    <item
-        android:id="@+id/action_dictionary"
-        android:icon="@drawable/dictionary"
-    android:title="@string/dictionary_api"
-    app:showAsAction="ifRoom"/>
--->
+        app:showAsAction="always" />
 
 
     <item
         android:id="@+id/item_4"
         android:icon="@drawable/song"
         android:title="Deezer song search api"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 </menu>

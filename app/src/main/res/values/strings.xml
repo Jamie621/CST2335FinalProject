@@ -1,10 +1,3 @@
-<!--
-<resources>
-    <string name="app_name">CST2335FinalProject</string>
-</resources>
-
--->
-
 <resources>
     <string name="app_name">CST2335FinalProject</string>
     <string name="Final_Project" translatable="false">Final Project</string>
@@ -13,10 +6,8 @@
     <string name="recipe_search" translatable="false">Recipe Search</string>
     <string name="dictionary_api" translatable="false">Dictionary API</string>
     <string name="deezer_song_search_api" translatable="false">Deezer song search api</string>
-
     <string name="Lookup">Lookup</string>
-    <string name="error_msg" translatable="false">Please enter the name of a valid food</string>
-    <!--                                                                      -->
+    
 
     <!-- Showcase title -->
     <string name="showCase">Sunrise &amp; Sunset Showcase</string>
@@ -66,6 +57,28 @@
     <string name="no">No</string>
     <string name="sunHelp">This App is for check Sunrise and Sunset time. Follow the hint to enter Latitude and longitude. You will see the result in the showcase after click LOOKUP.</string>
     <string name="location" translatable="false">" "</string>
+
+
+    <string name="error_msg">Please enter the name of a valid food</string>
+    <string name="typeArtistName">type artist name</string>
+    <string name="duration">Duration Detail</string>
+    <string name="title">Title Detail</string>
+    <string name="albumNameDetail">Album Name Detail</string>
+    <string name="addFavorite">ADD FAVORITE</string>
+    <string name="showFavorites">SHOW FAVORITES</string>
+    <string name="deleteFavorite">DELETE FAVORITE</string>
+    <string name="albumCover">Album cover</string>
+    <string name="searchButton">SEARCH</string>
+    <string name="OK">OK</string>
+    <string name="help_title">Help</string>
+    <string name="instructions">Instructions:Search artist for list of songs to see details or add to favorites.</string>
+    <string name="itemClicked">Item clicked: </string>
+    <string name="songAdded">Song added into favorites</string>
+    <string name="songAlreadyExist">Song already in favorites</string>
+    <string name="songDeleted">Song deleted from favorites</string>
+    <string name="enterLettersOnly">Please enter letters only</string>
+    <string name="validationPassed">Validation passed</string>
+    <string name="validation">Validation</string>
 
 
 </resources>
